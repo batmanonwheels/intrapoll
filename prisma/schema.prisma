@@ -10,13 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  userId Int     @unique
-  User   User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model Friend {
   id       Int  @id @default(autoincrement())
   friend   User @relation(fields: [friendId], references: [id])
@@ -30,13 +23,12 @@ model Poll {
   expired   Boolean    @default(false)
   question  String?
   results   Response[]
-  userId    Int?
-  User      User?      @relation(fields: [userId], references: [id])
 }
 
 model Response {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @default(now()) @db.Timestamp(6)
   response  String?
   userId    Int
   User      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -49,10 +41,11 @@ model User {
   name          String?    @db.VarChar(50)
   username      String?    @db.VarChar(35)
   email         String     @unique @db.VarChar(255)
-  answeredPolls Poll[]
+  bio           String?    @db.VarChar(255)
   streak        Int        @default(0)
   friends       Friend[]
   verifiedEmail Boolean    @default(false)
-  profile       Profile?
   responses     Response[]
+
+  @@map("users")
 }
