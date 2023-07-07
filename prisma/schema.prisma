@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id     Int     @id @default(autoincrement())
+  bio    String?
+  userId Int     @unique
+  User   User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Friend {
+  id       Int  @id @default(autoincrement())
+  friend   User @relation(fields: [friendId], references: [id])
+  friendId Int
+}
+
+model Poll {
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now()) @db.Timestamp(6)
+  expiresAt DateTime   @default(dbgenerated("NOW() + interval '24 hours'"))
+  expired   Boolean    @default(false)
+  question  String?
+  results   Response[]
+  userId    Int?
+  User      User?      @relation(fields: [userId], references: [id])
+}
+
+model Response {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  response  String?
+  userId    Int
+  User      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  pollId    Int
+  poll      Poll     @relation(fields: [pollId], references: [id])
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  name          String?    @db.VarChar(50)
+  username      String?    @db.VarChar(35)
+  email         String     @unique @db.VarChar(255)
+  answeredPolls Poll[]
+  streak        Int        @default(0)
+  friends       Friend[]
+  verifiedEmail Boolean    @default(false)
+  profile       Profile?
+  responses     Response[]
+}
