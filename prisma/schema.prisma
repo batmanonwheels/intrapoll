@@ -49,6 +49,13 @@ model Response {
   poll      Poll?    @relation(fields: [pollId], references: [id])
 }
 
+// model UserSettings {
+//   id     Int   @id @default(autoincrement())
+//   userId Int
+//   user   User? @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+//   darkMode Boolean @default(false)
+// }
+
 model User {
   id            Int        @id @default(autoincrement())
   username      String?    @unique @db.VarChar(35)
@@ -61,6 +68,7 @@ model User {
   verifiedEmail Boolean    @default(false)
   friends       Friend[]   @relation("requester")
   friendOf      Friend[]   @relation("addressee")
+  // settings      UserSettings[]
 
   @@map("users")
 }
