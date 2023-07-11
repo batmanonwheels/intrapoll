@@ -16,8 +16,8 @@ const Menu = ({}: MenuProps) => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant='ghost' size='icon'>
-					<HamburgerMenuIcon />
+				<Button variant='ghost'>
+					<HamburgerMenuIcon className='h-7 w-7' />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='end'>
@@ -46,9 +46,9 @@ const Menu = ({}: MenuProps) => {
 						<Link href={'/account'}>Account</Link>
 					</Button>
 				</DropdownMenuItem> */}
-				{/* <DropdownMenuItem>
+				<DropdownMenuItem className='flex justify-center'>
 					<ThemeToggle />
-				</DropdownMenuItem> */}
+				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

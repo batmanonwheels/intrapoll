@@ -1,17 +1,20 @@
 'use client';
 
 import Link from 'next/link';
-import UserSignInForm from './UserSignInForm';
+import SignInForm from './SignInForm';
 
 interface SignInProps {}
 
 const SignIn = ({}: SignInProps) => {
 	return (
-		<div className='container mx-auto flex w-full flex-col justify-center'>
-			<h1 className='text-xl text-center'>Good to see you again.</h1>
-			<UserSignInForm />
-			<p className='px-8 text-sm text-center'>
-				New here? <Link href='/sign-up'>Sign Up</Link>
+		<div className='container py-10 mx-auto flex max-h-screen flex-col justify-center'>
+			<h1 className='text-2xl text-center pb-3'>Welcome back!</h1>
+			<SignInForm />
+			<p className='px-8 py-4 text-sm text-center'>
+				New here?{' '}
+				<Link href='/sign-up'>
+					<span className='underline underline-offset-10'>Sign Up</span>
+				</Link>
 			</p>
 		</div>
 	);

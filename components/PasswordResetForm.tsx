@@ -17,21 +17,19 @@ import {
 } from './ui/form';
 import { Button } from './ui/button';
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface PasswordResetFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const formSchema = z.object({
-	username: z.string().min(2).max(35),
-	password: z.string().min(30),
+	email: z.string().min(2).max(35),
 });
 
-const UserSignInForm = ({ className, ...props }: UserAuthFormProps) => {
+const PasswordResetForm = ({ className, ...props }: PasswordResetFormProps) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			username: '',
-			password: '',
+			email: '',
 		},
 	});
 
@@ -44,41 +42,28 @@ const UserSignInForm = ({ className, ...props }: UserAuthFormProps) => {
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className='space-y-8 text-center'
+					className='space-y-5  w-full'
 				>
 					<FormField
 						control={form.control}
-						name='username'
+						name='email'
 						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Username</FormLabel>
+							<FormItem className=''>
+								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input placeholder='username' {...field} />
+									<Input placeholder='Email' {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
-					<FormField
-						control={form.control}
-						name='password'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Password</FormLabel>
-								<FormControl>
-									<Input placeholder='password' {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<Button className='text-center' type='submit'>
-						Submit
-					</Button>
+					<div className='flex justify-center'>
+						<Button type='submit'>Submit</Button>
+					</div>
 				</form>
 			</Form>
 		</div>
 	);
 };
 
-export default UserSignInForm;
+export default PasswordResetForm;
