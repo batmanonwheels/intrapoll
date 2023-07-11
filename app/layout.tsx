@@ -28,7 +28,9 @@ export default function RootLayout({
 			<body className='min-h-screen pt-12 bg-slate-50 dark:bg-slate-950 antialiased'>
 				<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
 					<NavBar />
-					<div className='container'>{children}</div>
+					<main className='flex h-screen flex-col items-center justify-between'>
+						{children}
+					</main>
 				</ThemeProvider>
 			</body>
 		</html>

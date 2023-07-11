@@ -6,12 +6,12 @@ interface NavBarProps {}
 
 const NavBar = ({}: NavBarProps) => {
 	return (
-		<div className='fixed top-0 min-w-full min-h-fit flex justify-between px-3 py-3'>
+		<div className='fixed top-0 min-w-full min-h-fit flex justify-between px-3 py-2'>
 			<Link
 				href={'/'}
 				className='text-3xl font-extrabold tracking-tight lg:text-5xl'
 			>
-				intrapoll
+				intrapoll.
 			</Link>
 			<Menu />
 		</div>

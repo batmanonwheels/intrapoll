@@ -1,15 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import UserSignUpForm from './UserSignUpForm';
+import SignUpForm from './SignUpForm';
 
 interface SignUpProps {}
 
 const SignUp = ({}: SignUpProps) => {
 	return (
-		<div className='container mx-auto flex w-full flex-col justify-center'>
-			<h1 className='text-xl text-center'>Welcome!</h1>
-			<UserSignUpForm />
+		<div className='container py-10 mx-auto flex max-h-screen flex-col justify-center'>
+			<h1 className='text-2xl text-center pb-3'>Join Us!</h1>
+			<SignUpForm />
 		</div>
 	);
 };
