@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
@@ -17,15 +18,14 @@ import {
 } from './ui/form';
 import { Button } from './ui/button';
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const formSchema = z.object({
-	email: z.string().min(2).max(35),
-	username: z.string().min(2).max(35),
-	password: z.string().min(30),
+	username: z.string().min(5).max(35),
+	password: z.string().min(8).max(35),
 });
 
-const UserSignUpForm = ({ className, ...props }: UserAuthFormProps) => {
+const SignInForm = ({ className, ...props }: SignInFormProps) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -33,7 +33,6 @@ const UserSignUpForm = ({ className, ...props }: UserAuthFormProps) => {
 		defaultValues: {
 			username: '',
 			password: '',
-			email: '',
 		},
 	});
 
@@ -44,31 +43,18 @@ const UserSignUpForm = ({ className, ...props }: UserAuthFormProps) => {
 	return (
 		<div className={cn('flex justify-center', className)} {...props}>
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className='space-y-5 w-full'
+				>
 					<FormField
 						control={form.control}
 						name='username'
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className=''>
 								<FormLabel>Username</FormLabel>
 								<FormControl>
-									<Input placeholder='username' {...field} />
-								</FormControl>
-								<FormDescription>
-									This is your public display name.
-								</FormDescription>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='email'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Email</FormLabel>
-								<FormControl>
-									<Input placeholder='email' {...field} />
+									<Input placeholder='Username' {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -78,20 +64,28 @@ const UserSignUpForm = ({ className, ...props }: UserAuthFormProps) => {
 						control={form.control}
 						name='password'
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className=''>
 								<FormLabel>Password</FormLabel>
 								<FormControl>
-									<Input placeholder='password' {...field} />
+									<Input placeholder='Password' type='password' {...field} />
 								</FormControl>
 								<FormMessage />
+								<p className='px-2 py-1 text-sm text-center'>
+									Forgot your password?{' '}
+									<Link href='/reset-password'>
+										<span className='underline underline-offset-10'>Reset</span>
+									</Link>
+								</p>
 							</FormItem>
 						)}
 					/>
-					<Button type='submit'>Submit</Button>
+					<div className='flex justify-center'>
+						<Button type='submit'>Submit</Button>
+					</div>
 				</form>
 			</Form>
 		</div>
 	);
 };
 
-export default UserSignUpForm;
+export default SignInForm;
