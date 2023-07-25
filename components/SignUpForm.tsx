@@ -16,14 +16,28 @@ import {
 	FormMessage,
 } from './ui/form';
 import { Button } from './ui/button';
+import axios from 'axios';
+import { signIn } from 'next-auth/react';
 
 interface SignUpFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const formSchema = z.object({
-	email: z.string().min(2).max(35),
-	username: z.string().min(2).max(35),
-	password: z.string().min(30),
-});
+//init form schema
+const formSchema = z
+	.object({
+		name: z.string().max(24),
+		email: z.string().min(12).max(255),
+		username: z.string().min(5).max(32),
+		password: z.string().min(8).max(120),
+		confirmPassword: z.string().min(8).max(120),
+	})
+	.superRefine(({ password, confirmPassword }, ctx) => {
+		if (confirmPassword !== password) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'The passwords did not match',
+			});
+		}
+	});
 
 const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,14 +45,31 @@ const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			name: '',
 			username: '',
-			password: '',
 			email: '',
+			password: '',
+			confirmPassword: '',
 		},
 	});
 
-	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		console.log(values);
+	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+		try {
+			const { data } = await axios.post('/api/users', values, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			if (data) {
+				signIn('credentials', {
+					email: values.email,
+					password: values.password,
+					callbackUrl: '/',
+				});
+			}
+		} catch (error: any) {
+			console.log(error.response.data.message);
+		}
 	};
 
 	return (
@@ -50,14 +81,14 @@ const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
 				>
 					<FormField
 						control={form.control}
-						name='username'
+						name='name'
 						render={({ field }) => (
 							<FormItem className=''>
 								<FormLabel>
-									Username <span className='text-red-600 opacity-90'>*</span>
+									Name <span className='text-red-600 opacity-90'>*</span>
 								</FormLabel>
 								<FormControl>
-									<Input placeholder='Username' {...field} />
+									<Input placeholder='Name' {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -80,15 +111,18 @@ const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
 					/>
 					<FormField
 						control={form.control}
-						name='password'
+						name='username'
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className=''>
 								<FormLabel>
-									Password <span className='text-red-600 opacity-90'>*</span>
+									Username <span className='text-red-600 opacity-90'>*</span>
 								</FormLabel>
 								<FormControl>
-									<Input placeholder='Password' type='password' {...field} />
+									<Input placeholder='Username' {...field} />
 								</FormControl>
+								<FormDescription>
+									Username must be at least 5 characters.
+								</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}
@@ -99,11 +133,33 @@ const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>
+									Password <span className='text-red-600 opacity-90'>*</span>
+								</FormLabel>
+								<FormControl>
+									<Input placeholder='Password' type='password' {...field} />
+								</FormControl>
+								<FormDescription>
+									Password must be at least 8 characters.
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='confirmPassword'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>
 									Confirm Password{' '}
 									<span className='text-red-600 opacity-90'>*</span>
 								</FormLabel>
 								<FormControl>
-									<Input placeholder='Password' type='password' {...field} />
+									<Input
+										placeholder='Confirm password'
+										type='password'
+										{...field}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
