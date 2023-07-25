@@ -4,41 +4,55 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+	HamburgerMenuIcon,
+	HomeIcon as Home,
+	PersonIcon as User,
+	GearIcon as Settings,
+} from '@radix-ui/react-icons';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { authOptions } from '@/lib/auth';
 import ThemeToggle from './ThemeToggle';
 import Link from 'next/link';
+import { getServerSession } from 'next-auth';
 
 interface MenuProps {}
 
-const Menu = ({}: MenuProps) => {
+const Menu = async ({}: MenuProps) => {
+	const session = await getServerSession(authOptions);
+	console.log(session);
+
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger asChild>
-				<Button variant='ghost'>
-					<HamburgerMenuIcon className='h-7 w-7' />
+				<Button variant='ghost' className=' p-0'>
+					<HamburgerMenuIcon className='h-7 w-10' />
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align='end'>
+			<DropdownMenuContent align='center' className='border-none shadow-none'>
 				<DropdownMenuItem>
 					<Link
 						href={'/'}
-						className={cn(
-							buttonVariants({ variant: 'ghost', size: 'default' })
-						)}
+						className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
 					>
-						Home
+						<Home className='h-[1.5rem] w-[1.5rem]' />
 					</Link>
 				</DropdownMenuItem>
 				<DropdownMenuItem>
 					<Link
-						href={'/sign-in'}
-						className={cn(
-							buttonVariants({ variant: 'ghost', size: 'default' })
-						)}
+						href={session ? `/u/${session.user.username}` : '/sign-in'}
+						className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
 					>
-						Sign In
+						<User className='h-[1.5rem] w-[1.5rem]' />
+					</Link>
+				</DropdownMenuItem>
+				<DropdownMenuItem>
+					<Link
+						href={'/settings'}
+						className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
+					>
+						<Settings className='h-[1.5rem] w-[1.5rem]' />
 					</Link>
 				</DropdownMenuItem>
 				{/* <DropdownMenuItem>
