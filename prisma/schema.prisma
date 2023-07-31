@@ -29,14 +29,24 @@ model Poll {
 }
 
 model Response {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @db.Timestamp(6)
-  updatedAt DateTime @default(now()) @db.Timestamp(6)
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt DateTime   @default(now()) @db.Timestamp(6)
   response  String?
+  option    PollOption
   userId    Int
   pollId    Int
-  poll      Poll     @relation(fields: [pollId], references: [id])
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  poll      Poll       @relation(fields: [pollId], references: [id])
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum PollOption {
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+  SIX
 }
 
 model UserSettings {
@@ -67,21 +77,21 @@ model Account {
 }
 
 model User {
-  id             Int            @id @default(autoincrement())
-  name           String         @db.VarChar(24)
-  username       String         @unique @db.VarChar(32)
-  email          String         @unique @db.VarChar(255)
-  hashedPassword String         @db.VarChar(120)
-  bio            String?        @default("") @db.VarChar(255)
-  image          String         @default("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
-  streak         Int            @default(0)
-  longestStreak  Int            @default(0)
-  verifiedEmail  DateTime?
-  accounts       Account[]
-  friendOf       Friend[]       @relation("addressee")
-  friends        Friend[]       @relation("requester")
-  responses      Response[]
-  settings       UserSettings[]
+  id            Int            @id @default(autoincrement())
+  name          String         @db.VarChar(24)
+  username      String         @unique @db.VarChar(32)
+  email         String         @unique @db.VarChar(255)
+  password      String         @db.VarChar(120)
+  // bio           String?        @default("") @db.VarChar(255)
+  image         String         @default("https://media.licdn.com/dms/image/D4E03AQHIQWmGZE_rRQ/profile-displayphoto-shrink_400_400/0/1671228163592?e=1696464000&v=beta&t=OpIHZWifYsLTJhKYc3pnNKSDn0z6PtiNj6_XAcvGe9s")
+  streak        Int            @default(0)
+  longestStreak Int            @default(0)
+  verifiedEmail DateTime?
+  accounts      Account[]
+  friendOf      Friend[]       @relation("addressee")
+  friends       Friend[]       @relation("requester")
+  responses     Response[]
+  settings      UserSettings[]
 }
 
 enum FriendStatus {
