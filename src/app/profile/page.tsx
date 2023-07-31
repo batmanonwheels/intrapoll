@@ -1,16 +1,17 @@
 // 'use client'
 
 import { authOptions } from '@/lib/auth';
-import { Session, getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 interface pageProps {}
 
-const page = async ({}: pageProps) => {
-	const session: Session = await getServerSession(authOptions);
-	// console.log(username);
-	redirect(`/${session!.username}`);
-	return <div>page</div>;
+const profileRedirect = async ({}: pageProps) => {
+	const session = await getServerSession(authOptions);
+	if (session) {
+		redirect(`/${session!.username}`);
+	}
+	return <div>Redirecting..</div>;
 };
 
-export default page;
+export default profileRedirect;
