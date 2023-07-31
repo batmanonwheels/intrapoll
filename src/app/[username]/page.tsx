@@ -32,7 +32,7 @@ const getUserData = async (params: { username: string }) => {
 
 	const data = await prisma.user.findUnique({
 		where: {
-			username: params.username,
+			username: params.username as string,
 		},
 		select: {
 			id: true,
