@@ -11,14 +11,14 @@ import { UserSettings } from '@prisma/client';
 
 export const authOptions: NextAuthOptions = {
 	providers: [
-		GoogleProvider({
-			clientId: process.env.GOOGLE_CLIENT_ID as string,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-		}),
-		AppleProvider({
-			clientId: process.env.APPLE_CLIENT_ID as string,
-			clientSecret: process.env.APPLE_CLIENT_SECRET as string,
-		}),
+		// GoogleProvider({
+		// 	clientId: process.env.GOOGLE_CLIENT_ID as string,
+		// 	clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+		// }),
+		// AppleProvider({
+		// 	clientId: process.env.APPLE_CLIENT_ID as string,
+		// 	clientSecret: process.env.APPLE_CLIENT_SECRET as string,
+		// }),
 		CredentialsProvider({
 			name: 'Sign in',
 			credentials: {
@@ -56,7 +56,6 @@ export const authOptions: NextAuthOptions = {
 					!(await compare(credentials!.password, userExists!.account!.password))
 				) {
 					return new Error(
-
 						JSON.stringify({
 							errors: {
 								message: 'This password is incorrect, please try again',

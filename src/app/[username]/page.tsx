@@ -1,4 +1,3 @@
-
 import UserCard from '@/components/(user)/UserCard';
 import ResponseCard from '@/components/(user)/ResponseCard';
 import { authOptions } from '@/lib/auth';
@@ -15,7 +14,6 @@ export async function generateMetadata({ params }: userProfileProps) {
 		title: `${params.username}'s Profile`,
 	};
 }
-
 
 const UserProfile = async ({ params }: userProfileProps) => {
 	const session = await getServerSession(authOptions);
@@ -180,7 +178,6 @@ const UserProfile = async ({ params }: userProfileProps) => {
 				friends={friends}
 			/>
 			<div className='mx-2 my-auto overscroll-none'>
-
 				{responses.length === 0 && (
 					<div className='my-auto text-center h-full'>
 						<h2 className='text-l font-normal py-1'>Nothing to see here..</h2>

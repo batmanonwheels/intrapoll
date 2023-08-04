@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { hash } from 'bcryptjs';
-import { UserWithSettings, UserWithSettingsAndAccount } from '@/types/prisma';
+import { UserWithSettingsAndAccount } from '@/types/prisma';
 
-const POST = async (req: NextRequest, res: NextResponse) => {
+const POST = async (req: NextRequest) => {
 	try {
 		const { name, email, username, password } = (await req.json()) as {
 			name: string;
