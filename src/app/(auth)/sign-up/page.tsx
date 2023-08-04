@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import SignUpForm from '@/components/SignUpForm';
+import SignUpForm from '@/components/(auth)/SignUpForm';
 
 interface SignUpProps {}
 

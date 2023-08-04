@@ -1,11 +1,13 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from './prisma';
-import { NextAuthOptions } from 'next-auth';
+import { Awaitable, NextAuthOptions } from 'next-auth';
 import { compare } from 'bcryptjs';
 import GoogleProvider from 'next-auth/providers/google';
 import AppleProvider from 'next-auth/providers/apple';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { User } from '@prisma/client';
+
+import { UserWithSettings, UserWithSettingsAndAccount } from '@/types/prisma';
+import { UserSettings } from '@prisma/client';
 
 export const authOptions: NextAuthOptions = {
 	providers: [
@@ -27,21 +29,23 @@ export const authOptions: NextAuthOptions = {
 				},
 				password: { label: 'Password', type: 'password' },
 			},
-			async authorize(credentials, req) {
-				const { email, password } = credentials!;
-
-				if (!email || !password) {
-					return new Error('Please enter a username and password!');
+			async authorize(credentials) {
+				if (credentials && (!credentials.email || !credentials.password)) {
+					return new Error('Please enter an email and password!');
 				}
 
-				const user = await prisma.user.findUnique({
+				const userExists = await prisma.user.findUnique({
 					where: {
-						email: email,
+						email: credentials!.email,
+					},
+					include: {
+						settings: true,
+						account: true,
 					},
 				});
 
-				if (!user) {
-					throw new Error(
+				if (userExists === null && !userExists!.account!.password) {
+					return new Error(
 						JSON.stringify({
 							errors: { message: 'This user does not exist', input: 'email' },
 							status: 409,
@@ -49,8 +53,10 @@ export const authOptions: NextAuthOptions = {
 					);
 				}
 
-				if (!(await compare(password, user.password))) {
-					throw new Error(
+				if (
+					!(await compare(credentials!.password, userExists!.account!.password))
+				) {
+					return new Error(
 						JSON.stringify({
 							errors: {
 								message: 'This password is incorrect, please try again',
@@ -60,43 +66,38 @@ export const authOptions: NextAuthOptions = {
 						})
 					);
 				}
-				console.log('hi', user);
-				return {
-					id: user.id,
-					name: user.name,
-					username: user.username,
-					email: user.email,
-					image: user.image,
-					streak: user.streak,
-					longestStreak: user.longestStreak,
-					verifiedEmail: user.verifiedEmail,
-				} as any;
+				const user = {
+					id: userExists!.id.toString(),
+					name: userExists!.name,
+					username: userExists!.username,
+					email: userExists!.email,
+					image: userExists!.image,
+					streak: userExists!.streak,
+					longestStreak: userExists!.longestStreak,
+					settings: userExists!.settings,
+				};
+				return user as any;
 			},
 		}),
 	],
 	adapter: PrismaAdapter(prisma),
-	session: {
-		strategy: 'jwt',
-	},
+	session: { strategy: 'jwt' },
 	callbacks: {
-		session: ({ session, token }) => {
-			// session.user.id = token.id;
-
-			return { ...session.user, ...token };
-		},
-		jwt: ({ token, account, user }) => {
-			// if (account) {
-			// 	// console.log(account);
-			// 	token.accessToken = account.access_token;
-			// 	token.id = user.id;
-			// }
+		jwt: async ({ token, account, user }) => {
 			if (user) {
-				const u = user as unknown as User;
+				const u = user as unknown as Partial<UserWithSettings>;
 				token.id = u.id;
 				token.username = u.username;
+				token.settings = u.settings;
 			}
-
 			return token;
+		},
+		session: async ({ session, token, user }) => {
+			session.user.id = token.id as number;
+			session.user.username = token.username as string;
+			session.user.settings = token.settings as UserSettings;
+
+			return session;
 		},
 	},
 	pages: {

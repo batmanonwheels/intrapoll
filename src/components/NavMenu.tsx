@@ -9,6 +9,7 @@ import {
 	HomeIcon as Home,
 	PersonIcon as User,
 	GearIcon as Settings,
+	BarChartIcon as Chart,
 } from '@radix-ui/react-icons';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -21,7 +22,6 @@ interface NavMenuProps {}
 
 const NavMenu = async ({}: NavMenuProps) => {
 	const session = await getServerSession(authOptions);
-	console.log(session);
 
 	return (
 		<DropdownMenu modal={false}>
@@ -41,8 +41,15 @@ const NavMenu = async ({}: NavMenuProps) => {
 				</DropdownMenuItem>
 				<DropdownMenuItem>
 					<Link
-						href={session ? `/${session.username}` : '/sign-in'}
-						// href={'/sign-in'}
+						href={'/#stats'}
+						className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
+					>
+						<Chart className='h-[1.5rem] w-[1.5rem]' />
+					</Link>
+				</DropdownMenuItem>
+				<DropdownMenuItem>
+					<Link
+						href={'/profile'}
 						className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
 					>
 						<User className='h-[1.5rem] w-[1.5rem]' />
@@ -61,9 +68,9 @@ const NavMenu = async ({}: NavMenuProps) => {
 						<Link href={'/account'}>Account</Link>
 					</Button>
 				</DropdownMenuItem> */}
-				<DropdownMenuItem className='flex justify-center'>
+				{/* <DropdownMenuItem className='flex justify-center'>
 					<ThemeToggle />
-				</DropdownMenuItem>
+				</DropdownMenuItem> */}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

@@ -5,7 +5,7 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
-import { Input } from './ui/input';
+import { Input } from '../ui/input';
 import {
 	Form,
 	FormField,
@@ -14,8 +14,8 @@ import {
 	FormControl,
 	FormDescription,
 	FormMessage,
-} from './ui/form';
-import { Button } from './ui/button';
+} from '../ui/form';
+import { Button } from '../ui/button';
 
 interface PasswordResetFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 

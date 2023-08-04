@@ -5,7 +5,7 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
-import { Input } from './ui/input';
+import { Input } from '../ui/input';
 import {
 	Form,
 	FormField,
@@ -13,14 +13,15 @@ import {
 	FormLabel,
 	FormControl,
 	FormMessage,
-} from './ui/form';
+} from '../ui/form';
 import { useToast } from '@/components/ui/use-toast';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import axios from 'axios';
+
+import Error from 'next/error';
 
 interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -40,7 +41,6 @@ const formSchema = z
 
 const SignInForm = ({ className, ...props }: SignInFormProps) => {
 	const searchParams = useSearchParams();
-	const router = useRouter();
 	const { toast } = useToast();
 	const [errorMessage, setErrorMessage] = useState<string>('');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -59,7 +59,7 @@ const SignInForm = ({ className, ...props }: SignInFormProps) => {
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		setIsLoading(true);
 		const { email, password } = values;
-		console.log(callbackUrl);
+
 		try {
 			const res = await signIn('credentials', {
 				redirect: true,
@@ -68,10 +68,12 @@ const SignInForm = ({ className, ...props }: SignInFormProps) => {
 				callbackUrl,
 			});
 			if (res?.error) {
-				throw new Error(res?.error);
+				throw new Error(res?.error as any);
 			}
-		} catch (e) {
-			const { input, message } = await JSON.parse(e?.message).errors;
+
+			// res && redirect(`/profile`);
+		} catch (e: any) {
+			const { input, message } = await JSON.parse(e!.message).errors;
 			form.setError(
 				input,
 				{ type: 'validate', message },

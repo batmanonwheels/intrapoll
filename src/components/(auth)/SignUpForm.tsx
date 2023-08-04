@@ -5,7 +5,7 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
-import { Input } from './ui/input';
+import { Input } from '../ui/input';
 import {
 	Form,
 	FormField,
@@ -14,8 +14,8 @@ import {
 	FormControl,
 	FormDescription,
 	FormMessage,
-} from './ui/form';
-import { Button } from './ui/button';
+} from '../ui/form';
+import { Button } from '../ui/button';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
@@ -76,7 +76,7 @@ const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
 		setIsLoading(true);
 		const { name, username, email, password } = values;
 		try {
-			const { data } = await axios.post('api/users', {
+			const { data } = await axios.post('api/register', {
 				name,
 				username,
 				email,

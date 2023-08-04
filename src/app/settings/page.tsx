@@ -1,11 +1,16 @@
 //'use client'
 
-//import
+import Settings from '@/components/(user)/Settings';
 
-interface settingsProps {}
+interface settingsPageProps {}
 
-const Settings = ({}: settingsProps) => {
-	return <h2 className='text-2xl'>Account Settings</h2>;
+const SettingsPage = ({}: settingsPageProps) => {
+	return (
+		<section className='container h-full flex flex-col mx-auto px-2'>
+			<h2 className='text-2xl'>Settings</h2>
+			<Settings />
+		</section>
+	);
 };
 
-export default Settings;
+export default SettingsPage;

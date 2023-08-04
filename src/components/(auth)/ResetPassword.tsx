@@ -1,4 +1,4 @@
-import PasswordResetForm from '@/components/PasswordResetForm';
+import PasswordResetForm from '@/components/(auth)/PasswordResetForm';
 
 interface resetPasswordProps {}
 

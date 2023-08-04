@@ -1,36 +1,24 @@
-//'use client'
-
-import { Separator } from '@/components/ui/separator';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import UserCard from '@/components/(user)/UserCard';
+import ResponseCard from '@/components/(user)/ResponseCard';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { Response, User } from '@prisma/client';
 import { getServerSession } from 'next-auth';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { UserWithFriends, UserWithFriendsAndResponses } from '@/types/prisma';
+import { User } from '@prisma/client';
 
-interface profileProps {
+interface userProfileProps {
 	params: { username: string };
 }
-export async function generateMetadata({ params }: profileProps) {
+export async function generateMetadata({ params }: userProfileProps) {
 	return {
 		title: `${params.username}'s Profile`,
 	};
 }
 
-const getUserData = async (params: { username: string }) => {
+const UserProfile = async ({ params }: userProfileProps) => {
 	const session = await getServerSession(authOptions);
 
-	const data = await prisma.user.findUnique({
+	const user: Partial<UserWithFriends> | null = await prisma.user.findUnique({
 		where: {
 			username: params.username as string,
 		},
@@ -38,145 +26,187 @@ const getUserData = async (params: { username: string }) => {
 			id: true,
 			name: true,
 			username: true,
-			email: true,
-			streak: true,
-			longestStreak: true,
-			verifiedEmail: true,
+			image: true,
+			// streak: true,
+			// longestStreak: true,
+			// verifiedEmail: true,
 			friends: true,
-			responses: true,
+			// responses: true,
 		},
 	});
-	return data as Partial<User>;
-};
 
-const Profile = async ({ params }: profileProps) => {
-	// const { name, username, image, email, streak, longestStreak, verifiedEmail } =
-	// 	await getUserData(params);
+	const {
+		id,
+		name,
+		username,
+		image,
+		// streak,
+		// longestStreak,
+		// verifiedEmail,
+		// responses,
+		// friends,
+	} = user as User;
 
-	const name = 'Dev';
-	const username = 'batmanonwheels';
-	const image =
-		'https://media.licdn.com/dms/image/D4E03AQHIQWmGZE_rRQ/profile-displayphoto-shrink_400_400/0/1671228163592?e=1696464000&v=beta&t=OpIHZWifYsLTJhKYc3pnNKSDn0z6PtiNj6_XAcvGe9s';
-	const bio =
-		'Gamer. Web scholar. Beer practitioner. Music evangelist. Travel guru. Friendly twitteraholic. Unapologetic coffee geek. Zombie advocate.';
+	const friends = 409;
+	const streak = 3;
+	const longestStreak = 16;
+	//
 
-	const response = {
-		id: 1,
-		date: 'July 30th, 2023',
-		response: 'Yes',
-		option: 'ONE',
-		prompt: '',
-	};
+	const responses = [
+		{
+			id: 1,
+			date: 'July 30th, 2023',
+			response: 'Apples',
+			option: 'ONE',
+			prompt: 'Apples or Oranges?',
+			image:
+				'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+			liked: true,
+		},
+		{
+			id: 2,
+			date: 'July 29th, 2023',
+			response: 'iOS',
+			option: 'ONE',
+			prompt: 'iOS or Android?',
+			image:
+				'https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGFwcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60',
+			liked: false,
+		},
+		{
+			id: 3,
+			date: 'July 28th, 2023',
+			response: 'Pie',
+			option: 'ONE',
+			prompt: 'Pie or Cake?',
+			image:
+				'https://images.unsplash.com/photo-1621743478914-cc8a86d7e7b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80',
+			liked: true,
+		},
+		{
+			id: 4,
+			date: 'July 26th, 2023',
+			response: 'Chocolate',
+			option: 'ONE',
+			prompt: 'Vanilla or Chocolate?',
+			image:
+				'https://images.unsplash.com/photo-1626697556651-67ebdcb8cbd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
+			liked: true,
+		},
+		{
+			id: 5,
+			date: 'July 25th, 2023',
+			response: 'Pizza',
+			option: 'ONE',
+			prompt: 'Cookies or Pizza?',
+			image:
+				'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
+			liked: true,
+		},
+		{
+			id: 6,
+			date: 'July 24th, 2023',
+			response: 'Life',
+			option: 'ONE',
+			prompt: 'Life or Death?',
+			image:
+				'https://images.unsplash.com/photo-1476611317561-60117649dd94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
+			liked: false,
+		},
+		{
+			id: 7,
+			date: 'July 23th, 2023',
+			response: 'Prince',
+			option: 'ONE',
+			prompt: 'Prince or Michael Jackson?',
+			image:
+				'https://images.unsplash.com/photo-1557080768-1b6176358e51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJpbmNlfGVufDB8MHwwfHx8Mg%3D%3D&auto=format&fit=crop&w=800&q=60',
+			liked: true,
+		},
 
-	const responses = [];
+		// {
+		// 	id: 6,
+		// 	date: 'July 27th, 2023',
+		// 	response: 'Apples',
+		// 	option: 'ONE',
+		// 	prompt: 'Vanilla or Chocolate?',
+		// 	image:
+		// 		'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+		// 	liked: true,
+		// },
+		// {
+		// 	id: 7,
+		// 	date: 'July 26th, 2023',
+		// 	response: 'Apples',
+		// 	option: 'ONE',
+		// 	prompt: 'Apples or Oranges?',
+		// 	image:
+		// 		'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+		// 	liked: true,
+		// },
+		// {
+		// 	id: 8,
+		// 	date: 'July 27th, 2023',
+		// 	response: 'Apples',
+		// 	option: 'ONE',
+		// 	prompt: 'Vanilla or Chocolate?',
+		// 	image:
+		// 		'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+		// 	liked: true,
+		// },
+		// {
+		// 	id: 9,
+		// 	date: 'July 26th, 2023',
+		// 	response: 'Apples',
+		// 	option: 'ONE',
+		// 	prompt: 'Apples or Oranges?',
+		// 	image:
+		// 		'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+		// 	liked: true,
+		// },
+	];
 
 	return (
-		<>
-			<Card className='border-none h-full'>
-				<CardHeader
-					className={cn('flex flex-row justify-between p-3 my-auto h-28')}
-				>
-					<div className='flex flex-col my-auto'>
-						<h2 className='text-xl font-medium  text-gray-700 dark:text-gray-100'>
-							{name}
-						</h2>
-						<h3 className='text-sm text-gray-500 dark:text-gray-500'>
-							@{username}
-						</h3>
-					</div>
-					<Avatar className='h-20 w-20'>
-						<AvatarImage src={image} alt={`${params.username}`} />
-						<AvatarFallback>{params.username.split('')[0]}</AvatarFallback>
-					</Avatar>
-				</CardHeader>
-				<div className='flex flex-row h-10 px-3 justify-evenly text-center mb-5'>
-					<Link href={'/u/batmanonwheels/friends'} className='w-4/12'>
-						<h4 className='text-m'>{0}</h4>
-						<p className='text-xs'>friends</p>
-					</Link>
-					<Separator orientation='vertical' className={cn('h-full')} />
-					<div className='w-4/12'>
-						<h4 className='text-m'>{0}</h4>
-						<p className='text-xs'>current streak</p>
-					</div>
-					<Separator orientation='vertical' />
-					<div className='w-4/12'>
-						<h4 className='text-m'>{0}</h4>
-						<p className='text-xs'>longest streak</p>
-					</div>
-				</div>
-				<Separator className='mx-auto w-full my-3' />
-
-				{/* <CardContent className='px-2'>
-					<p className='w-13/12 text-xs mx-1 text-gray-300 dark:text-gray-200'>
-						{bio}
-					</p>
-				</CardContent> */}
-
+		<section className='h-full flex flex-col '>
+			<UserCard
+				id={id}
+				name={name}
+				username={username}
+				streak={streak}
+				image={image}
+				longestStreak={longestStreak}
+				friends={friends}
+			/>
+			<div className='mx-2 my-auto overscroll-none'>
 				{responses.length === 0 && (
 					<div className='my-auto text-center h-full'>
 						<h2 className='text-l font-normal py-1'>Nothing to see here..</h2>
 						<h3 className='text-sl font-light py-1'></h3>
 					</div>
 				)}
-				{/* {responses.map()} */}
-			</Card>
-		</>
+				<h3 className='ml-1 mb-1 mt-3 text-gray-300'>{`${
+					name.split(' ')[0]
+				}'s Poll Responses`}</h3>
+				<ul className=''>
+					{responses.length > 0 &&
+						responses.map((res, i) => (
+							<ResponseCard
+								key={res.date}
+								id={res.id}
+								date={res.date}
+								response={res.response}
+								option={res.option}
+								prompt={res.prompt}
+								image={res.image}
+								liked={res.liked}
+								name={name}
+								last={i === responses.length - 1 ? true : false}
+							/>
+						))}
+				</ul>
+			</div>
+		</section>
 	);
 };
 
-export default Profile;
-
-// <>
-// 			<Card className='border-none h-full'>
-// 				<CardHeader className={cn('flex flex-row my-auto')}>
-// 					<Avatar>
-// 						<AvatarImage src={image} alt={`${params.username}`} />
-// 						<AvatarFallback>{params.username.split('')[0]}</AvatarFallback>
-// 					</Avatar>
-// 					<div className='flex flex-col'>
-// 						<h2 className='text-xl font-medium  text-gray-700 dark:text-gray-100'>
-// 							{name}
-// 						</h2>
-// 						<h3 className='text-sm text-gray-500 dark:text-gray-500'>
-// 							@{username}
-// 						</h3>
-// 					</div>
-// 				</CardHeader>
-// 				<div className='flex flex-row h-8 justify-evenly text-center '>
-// 					<div className='w-4/12'>
-// 						<h4 className='text-m'>{0}</h4>
-// 						<p className='text-xs'>current streak</p>
-// 					</div>
-// 					<Separator orientation='vertical' className={cn('h-full')} />
-// 					<Link href={'/u/batmanonwheels/friends'} className='w-4/12'>
-// 						<h4 className='text-m'>{0}</h4>
-// 						<p className='text-xs'>friends</p>
-// 					</Link>
-
-// 					<Separator orientation='vertical' />
-// 					<div className='w-4/12'>
-// 						<h4 className='text-m'>{0}</h4>
-// 						<p className='text-xs'>longest streak</p>
-// 					</div>
-// 					{/* <Separator orientation='vertical' />
-// 				<div className='className=w-7/12'>
-// 					<h4 className='text-m'>
-// 						{0}/{0}
-// 					</h4>
-// 					<p className='text-xs'>current/longest streak</p>
-// 				</div> */}
-// 				</div>
-// 				<Separator className='mx-auto w-11/12 my-3' />
-// 				<CardContent className='px-2'>
-// 					<p className='w-13/12 text-xs mx-1'>{bio}</p>
-// 				</CardContent>
-// 				<Separator className='mx-auto w-full my-3' />
-// 				{responses.length === 0 && (
-// 					<div className='mx-auto text-center h-full'>
-// 						<h2 className='text-xl font-medium py-1'>Nothing to see here..</h2>
-// 						<h3 className='text-sl font-light py-1'>Literally</h3>
-// 					</div>
-// 				)}
-// 			</Card>
-// 		</>
+export default UserProfile;
