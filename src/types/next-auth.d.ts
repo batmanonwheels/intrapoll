@@ -1,35 +1,30 @@
-import { User } from '@prisma/client';
-import NextAuth from 'next-auth';
+
+import { User, UserSettings } from '@prisma/client';
+import NextAuth, { DefaultSession } from 'next-auth';
+import { UserWithSettings, UserWithSettingsAndAccount } from './prisma';
+
 
 declare module 'next-auth' {
 	/**
 	 * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
 	 */
 	interface Session {
-		// user: { name: string; email: string; image: string };
-		user: {
-			id: number;
-			name: string;
-			username: string;
-			email: string;
-			bio: string | null;
-			streak: number;
-			longestStreak: number;
-			verifiedEmail: Date | null;
-		} & Session['user'];
+		// username: string;
+		// settings: UserSettings;
+		// user: {
+		// 	id: number;
+		// 	name: string;
+		// 	username: string;
+		// 	email: string;
+		// 	// streak: number;
+		// 	// longestStreak: number;
+		// 	// verifiedEmail: Date | null;
+		// 	settings: UserSettings;
+		// };
+		user: Partial<UserWithSettingsAndAccount>;
 	}
 	interface JWT {
 		/** OpenID ID Token */
-		user: {
-			id: number;
-			name: string;
-			username: string;
-			email: string;
-			bio: string | null;
-			image: string;
-			streak: number;
-			longestStreak: number;
-			verifiedEmail: Date | null;
-		};
+		user: Partial<UserWithSettingsAndAccount> | null;
 	}
 }

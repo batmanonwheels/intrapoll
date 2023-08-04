@@ -12,4 +12,5 @@ export default withAuth(
 	}
 );
 
-export const config = { matcher: ['/settings'] };
+export const config = { matcher: ['/settings', '/profile'] };
+

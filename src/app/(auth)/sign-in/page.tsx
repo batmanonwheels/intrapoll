@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import SignInForm from '@/components/SignInForm';
+import SignInForm from '@/components/(auth)/SignInForm';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import providers from 'next-auth';
 
