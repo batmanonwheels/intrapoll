@@ -46,7 +46,6 @@ const ThemeToggle = ({ updateUserTheme }: ThemeToggleProps) => {
 };
 
 export default ThemeToggle;
-
 // const ThemeToggle = ({}: ThemeToggleProps) => {
 // 	const { setTheme } = useTheme();
 // 	return (

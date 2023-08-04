@@ -1,5 +1,6 @@
 import ResetPassword from '@/components/(auth)/ResetPassword';
 
+
 interface resetPasswordProps {}
 
 const resetPassword = ({}: resetPasswordProps) => {

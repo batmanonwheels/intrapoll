@@ -52,11 +52,11 @@ export const authOptions: NextAuthOptions = {
 						})
 					);
 				}
-
 				if (
 					!(await compare(credentials!.password, userExists!.account!.password))
 				) {
 					return new Error(
+
 						JSON.stringify({
 							errors: {
 								message: 'This password is incorrect, please try again',

@@ -1,6 +1,8 @@
+
 import { User, UserSettings } from '@prisma/client';
 import NextAuth, { DefaultSession } from 'next-auth';
 import { UserWithSettings, UserWithSettingsAndAccount } from './prisma';
+
 
 declare module 'next-auth' {
 	/**

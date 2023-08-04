@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation';
 
 interface pageProps {}
 
+
 const profileRedirect = async ({}: pageProps) => {
 	const session = await getServerSession(authOptions);
 
