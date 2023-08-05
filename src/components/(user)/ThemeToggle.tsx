@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes';
 import { Theme } from '@prisma/client';
 
 interface ThemeToggleProps {
-	updateUserTheme: (choice: string) => void;
+	updateUserTheme: (theme: string) => void;
 }
 
 const ThemeToggle = ({ updateUserTheme }: ThemeToggleProps) => {
