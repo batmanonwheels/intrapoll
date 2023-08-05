@@ -1,4 +1,3 @@
-
 import UserCard from '@/components/(user)/UserCard';
 import ResponseCard from '@/components/(user)/ResponseCard';
 import { authOptions } from '@/lib/auth';
@@ -16,7 +15,6 @@ export async function generateMetadata({ params }: userProfileProps) {
 	};
 }
 
-
 const UserProfile = async ({ params }: userProfileProps) => {
 	const session = await getServerSession(authOptions);
 
@@ -32,7 +30,7 @@ const UserProfile = async ({ params }: userProfileProps) => {
 			// streak: true,
 			// longestStreak: true,
 			// verifiedEmail: true,
-			friends: true,
+			friends: {},
 			// responses: true,
 		},
 	});
@@ -169,7 +167,7 @@ const UserProfile = async ({ params }: userProfileProps) => {
 	];
 
 	return (
-		<section className='h-full flex flex-col '>
+		<section className='flex flex-col'>
 			<UserCard
 				id={id}
 				name={name}
@@ -179,18 +177,17 @@ const UserProfile = async ({ params }: userProfileProps) => {
 				longestStreak={longestStreak}
 				friends={friends}
 			/>
-			<div className='mx-2 my-auto overscroll-none'>
-
+			<div className='mx-2 my-auto'>
 				{responses.length === 0 && (
 					<div className='my-auto text-center h-full'>
 						<h2 className='text-l font-normal py-1'>Nothing to see here..</h2>
 						<h3 className='text-sl font-light py-1'></h3>
 					</div>
 				)}
-				<h3 className='ml-1 mb-1 mt-3 text-gray-300'>{`${
+				<h3 className='ml-1 mb-1 mt-3 text-gray-600 dark:text-gray-300'>{`${
 					name.split(' ')[0]
 				}'s Poll Responses`}</h3>
-				<ul className=''>
+				<ul className='h-fit overflow-scroll snap-proximity snap-y'>
 					{responses.length > 0 &&
 						responses.map((res, i) => (
 							<ResponseCard

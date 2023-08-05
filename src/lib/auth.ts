@@ -8,17 +8,18 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 
 import { UserWithSettings, UserWithSettingsAndAccount } from '@/types/prisma';
 import { UserSettings } from '@prisma/client';
+import { NextResponse } from 'next/server';
 
 export const authOptions: NextAuthOptions = {
 	providers: [
-		GoogleProvider({
-			clientId: process.env.GOOGLE_CLIENT_ID as string,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-		}),
-		AppleProvider({
-			clientId: process.env.APPLE_CLIENT_ID as string,
-			clientSecret: process.env.APPLE_CLIENT_SECRET as string,
-		}),
+		// GoogleProvider({
+		// 	clientId: process.env.GOOGLE_CLIENT_ID as string,
+		// 	clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+		// }),
+		// AppleProvider({
+		// 	clientId: process.env.APPLE_CLIENT_ID as string,
+		// 	clientSecret: process.env.APPLE_CLIENT_SECRET as string,
+		// }),
 		CredentialsProvider({
 			name: 'Sign in',
 			credentials: {
@@ -31,10 +32,15 @@ export const authOptions: NextAuthOptions = {
 			},
 			async authorize(credentials) {
 				if (credentials && (!credentials.email || !credentials.password)) {
-					return new Error('Please enter an email and password!');
+					throw new Error(
+						JSON.stringify({
+							error: 'Please enter an email and password!',
+							status: 409,
+						})
+					);
 				}
 
-				const userExists = await prisma.user.findUnique({
+				const userExists = await prisma.user.findUniqueOrThrow({
 					where: {
 						email: credentials!.email,
 					},
@@ -44,21 +50,19 @@ export const authOptions: NextAuthOptions = {
 					},
 				});
 
-				if (userExists === null && !userExists!.account!.password) {
-					return new Error(
-						JSON.stringify({
-							errors: { message: 'This user does not exist', input: 'email' },
-							status: 409,
-						})
-					);
-				}
+				// if (!userExists) {
+				// 	return NextResponse.json({
+				// 		error: { message: 'This user does not exist', input: 'email' },
+				// 		status: 409,
+				// 	});
+				// }
+
 				if (
 					!(await compare(credentials!.password, userExists!.account!.password))
 				) {
-					return new Error(
-
+					throw new Error(
 						JSON.stringify({
-							errors: {
+							error: {
 								message: 'This password is incorrect, please try again',
 								input: 'password',
 							},
@@ -66,6 +70,7 @@ export const authOptions: NextAuthOptions = {
 						})
 					);
 				}
+
 				const user = {
 					id: userExists!.id.toString(),
 					name: userExists!.name,
@@ -96,14 +101,13 @@ export const authOptions: NextAuthOptions = {
 			session.user.id = token.id as number;
 			session.user.username = token.username as string;
 			session.user.settings = token.settings as UserSettings;
-
 			return session;
 		},
 	},
 	pages: {
 		signIn: '/sign-in',
-		newUser: '/sign-up',
-		verifyRequest: '/verify-email',
+		// newUser: '/sign-up',
+		// verifyRequest: '/verify-email',
 		error: '/sign-in',
 	},
 	secret: process.env.NEXTAUTH_SECRET,
