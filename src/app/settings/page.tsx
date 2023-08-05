@@ -1,6 +1,6 @@
 //'use client'
 
-import Settings from '@/components/(user)/Settings';
+import Settings from '@/components/(settings)/Settings';
 
 interface settingsPageProps {}
 

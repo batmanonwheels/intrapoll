@@ -13,7 +13,7 @@ import {
 } from '@radix-ui/react-icons';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import ThemeToggle from './(user)/ThemeToggle';
+import ThemeToggle from './(settings)/ThemeToggle';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
