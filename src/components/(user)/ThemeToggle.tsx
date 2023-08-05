@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes';
 import { Theme } from '@prisma/client';
 
 interface ThemeToggleProps {
-	updateUserTheme: (theme: string) => void;
+	updateUserTheme: (theme: Theme) => void;
 }
 
 const ThemeToggle = ({ updateUserTheme }: ThemeToggleProps) => {
@@ -16,11 +16,9 @@ const ThemeToggle = ({ updateUserTheme }: ThemeToggleProps) => {
 		setTheme(theme);
 		updateUserTheme(theme);
 	};
-	// console.log(theme);
 	return (
 		<div className='flex flex-row justify-between my-5'>
 			<h3>Site Theme</h3>
-			{/* <ThemeToggle /> */}
 			<Button
 				onClick={() => handleTheme(Theme.light)}
 				disabled={theme === 'light' ? true : false}
