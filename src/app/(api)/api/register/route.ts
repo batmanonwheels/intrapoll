@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { hash } from 'bcryptjs';
 import { UserWithSettingsAndAccount } from '@/types/prisma';
 
-const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
 	try {
 		const { name, email, username, password } = (await req.json()) as {
 			name: string;

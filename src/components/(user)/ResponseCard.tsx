@@ -35,7 +35,7 @@ const ResponseCard = ({
 	const [isLiked, setIsLiked] = useState<boolean>(liked);
 
 	return (
-		<li key={id} className='py-2 min-h-fit'>
+		<li key={id} className='py-2 min-h-fit snap-start'>
 			<div className='flex items-center '>
 				{/* <Image
       src={image}

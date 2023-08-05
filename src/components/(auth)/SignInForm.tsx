@@ -18,10 +18,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { Button } from '../ui/button';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { signIn } from 'next-auth/react';
 
-import Error from 'next/error';
+import { SignInResponse, signIn, useSession } from 'next-auth/react';
 
 interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -41,8 +39,11 @@ const formSchema = z
 
 const SignInForm = ({ className, ...props }: SignInFormProps) => {
 	const searchParams = useSearchParams();
-	const { toast } = useToast();
-	const [errorMessage, setErrorMessage] = useState<string>('');
+	// const { data: session } = useSession();
+	// const router = useRouter();
+
+	// const { toast } = useToast();
+	// const [errorMessage, setErrorMessage] = useState<string>('');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const callbackUrl = searchParams.get('callbackUrl') || '/profile';
@@ -59,28 +60,29 @@ const SignInForm = ({ className, ...props }: SignInFormProps) => {
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		setIsLoading(true);
 		const { email, password } = values;
-
 		try {
-			const res = await signIn('credentials', {
-				redirect: true,
-				email,
-				password,
-				callbackUrl,
-			});
-			if (res?.error) {
-				throw new Error(res?.error as any);
-			}
-
-			// res && redirect(`/profile`);
-		} catch (e: any) {
-			const { input, message } = await JSON.parse(e!.message).errors;
-			form.setError(
-				input,
-				{ type: 'validate', message },
+			const signInResponse: SignInResponse | undefined = await signIn(
+				'credentials',
 				{
-					shouldFocus: true,
+					redirect: true,
+					email,
+					password,
+					callbackUrl,
 				}
 			);
+			console.log(signInResponse);
+
+			if (signInResponse!.error) {
+				throw new Error(signInResponse!.error);
+			}
+		} catch (e: any) {
+			// form.setError(
+			// 	input,
+			// 	{ type: 'validate', message },
+			// 	{
+			// 		shouldFocus: true,
+			// 	}
+			// );
 		} finally {
 			setIsLoading(false);
 		}

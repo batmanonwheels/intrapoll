@@ -1,6 +1,6 @@
 'use client';
 
-import ThemeToggle from '../ThemeToggle';
+import ThemeToggle from './ThemeToggle';
 import { MoonIcon, SunIcon, DesktopIcon } from '@radix-ui/react-icons';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
@@ -11,9 +11,9 @@ import { Theme } from '@prisma/client';
 interface SettingsProps {}
 
 const Settings = ({}: SettingsProps) => {
-	const updateUserTheme = async (mode: string) => {
+	const updateUserTheme = async (theme: Theme) => {
 		try {
-			const res = await axios.patch('api/theme', { theme: mode });
+			const res = await axios.patch('api/theme', { theme });
 		} catch (error) {
 			console.log(error);
 		}
