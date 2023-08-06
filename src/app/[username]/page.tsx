@@ -17,6 +17,7 @@ export async function generateMetadata({ params }: userProfileProps) {
 
 const UserProfile = async ({ params }: userProfileProps) => {
 	const session = await getServerSession(authOptions);
+	console.log(session);
 
 	const user: Partial<UserWithFriends> | null = await prisma.user.findUnique({
 		where: {

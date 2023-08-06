@@ -4,17 +4,20 @@ import { MoonIcon, SunIcon, DesktopIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
 import { Theme } from '@prisma/client';
+import axios from 'axios';
 
-interface ThemeToggleProps {
-	updateUserTheme: (theme: Theme) => void;
-}
+interface ThemeToggleProps {}
 
-const ThemeToggle = ({ updateUserTheme }: ThemeToggleProps) => {
+const ThemeToggle = ({}: ThemeToggleProps) => {
 	const { theme, setTheme } = useTheme();
 
-	const handleTheme = (theme: Theme) => {
+	const handleTheme = async (theme: Theme) => {
 		setTheme(theme);
-		updateUserTheme(theme);
+		try {
+			const res = await axios.patch('api/theme', { theme });
+		} catch (error) {
+			console.log(error);
+		}
 	};
 	return (
 		<div className='flex flex-row justify-between my-5'>
