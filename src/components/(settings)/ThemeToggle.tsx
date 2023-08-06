@@ -20,29 +20,31 @@ const ThemeToggle = ({}: ThemeToggleProps) => {
 		}
 	};
 	return (
-		<div className='flex flex-row justify-between my-5'>
-			<h3>Site Theme</h3>
-			<Button
-				onClick={() => handleTheme(Theme.light)}
-				disabled={theme === 'light' ? true : false}
-			>
-				<SunIcon className='h-[1.1rem] w-[1.1rem]  transition-all rotate-0 scale-100' />
-				<span className='sr-only'>Light Mode</span>
-			</Button>
-			<Button
-				onClick={() => handleTheme(Theme.dark)}
-				disabled={theme === 'dark' ? true : false}
-			>
-				<MoonIcon className='h-[1.1rem] w-[1.1rem]  transition-all rotate-0 scale-100' />
-				<span className='sr-only'>Dark Mode</span>
-			</Button>
-			<Button
-				onClick={() => handleTheme(Theme.system)}
-				disabled={theme === 'system' ? true : false}
-			>
-				<DesktopIcon className='h-[1.1rem] w-[1.1rem]  transition-all rotate-0 scale-100' />
-				<span className='sr-only'>System</span>
-			</Button>
+		<div className='my-3'>
+			<h3 className='my-2'>Site Theme</h3>
+			<div className='flex flex-row justify-evenly'>
+				<Button
+					onClick={() => handleTheme(Theme.light)}
+					disabled={theme === 'light' ? true : false}
+				>
+					<SunIcon className='h-[1.1rem] w-[1.1rem]  transition-all rotate-0 scale-100' />
+					<span className='sr-only'>Light Mode</span>
+				</Button>
+				<Button
+					onClick={() => handleTheme(Theme.dark)}
+					disabled={theme === 'dark' ? true : false}
+				>
+					<MoonIcon className='h-[1.1rem] w-[1.1rem]  transition-all rotate-0 scale-100' />
+					<span className='sr-only'>Dark Mode</span>
+				</Button>
+				<Button
+					onClick={() => handleTheme(Theme.system)}
+					disabled={theme === 'system' ? true : false}
+				>
+					<DesktopIcon className='h-[1.1rem] w-[1.1rem]  transition-all rotate-0 scale-100' />
+					<span className='sr-only'>System</span>
+				</Button>
+			</div>
 		</div>
 	);
 };
