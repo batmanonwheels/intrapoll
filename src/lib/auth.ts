@@ -71,6 +71,8 @@ export const authOptions: NextAuthOptions = {
 					);
 				}
 
+				console.log(userExists);
+
 				const user = {
 					id: userExists!.id.toString(),
 					name: userExists!.name,
@@ -79,6 +81,7 @@ export const authOptions: NextAuthOptions = {
 					image: userExists!.image,
 					streak: userExists!.streak,
 					longestStreak: userExists!.longestStreak,
+					createdAt: userExists!.createdAt,
 					settings: userExists!.settings,
 				};
 				return user as any;
@@ -93,6 +96,7 @@ export const authOptions: NextAuthOptions = {
 				const u = user as unknown as Partial<UserWithSettings>;
 				token.id = u.id;
 				token.username = u.username;
+				token.createdAt = u.createdAt;
 				token.settings = u.settings;
 			}
 			return token;
@@ -100,6 +104,7 @@ export const authOptions: NextAuthOptions = {
 		session: async ({ session, token, user }) => {
 			session.user.id = token.id as number;
 			session.user.username = token.username as string;
+			session.user.createdAt = token.createdAt as Date;
 			session.user.settings = token.settings as UserSettings;
 			return session;
 		},

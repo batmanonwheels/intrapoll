@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardHeader } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -6,9 +7,19 @@ interface MiniUserCardProps {
 	name: string | undefined;
 	username: string | undefined;
 	image: string | undefined;
+	createdAt: Date | undefined;
 }
 
-const MiniUserCard = async ({ name, username, image }: MiniUserCardProps) => {
+const MiniUserCard = async ({
+	name,
+	username,
+	image,
+	createdAt,
+}: MiniUserCardProps) => {
+	const createdMonthYear = moment(createdAt).format('MMM YYYY');
+
+	const memberSince = `Member since ${createdMonthYear}`;
+
 	return (
 		<Card className={cn(' shadow-sm dark:shadow-neutral-800')}>
 			<CardHeader className={cn('flex flex-row gap-3 px-3 py-1 my my-auto')}>
@@ -21,9 +32,7 @@ const MiniUserCard = async ({ name, username, image }: MiniUserCardProps) => {
 						{name}
 					</h2>
 					<h3 className='text-sm text-muted-foreground '>@{username}</h3>
-					<h4 className='text-xs py-1 text-muted-foreground '>
-						Member since Aug 2023
-					</h4>
+					<h4 className='text-xs py-1 text-muted-foreground '>{memberSince}</h4>
 				</div>
 			</CardHeader>
 		</Card>

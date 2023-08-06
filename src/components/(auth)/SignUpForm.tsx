@@ -82,6 +82,8 @@ const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
 				email,
 				password,
 			});
+
+			signIn('credentials', { username, password });
 		} catch (error: any) {
 			const { input, message } = error.response.data;
 			form.setError(

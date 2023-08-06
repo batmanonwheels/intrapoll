@@ -13,7 +13,6 @@ import {
 } from '@radix-ui/react-icons';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import ThemeToggle from './(settings)/ThemeToggle';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -63,14 +62,6 @@ const NavMenu = async ({}: NavMenuProps) => {
 						<Settings className='h-[1.5rem] w-[1.5rem]' />
 					</Link>
 				</DropdownMenuItem>
-				{/* <DropdownMenuItem>
-					<Button variant='ghost' size='default'>
-						<Link href={'/account'}>Account</Link>
-					</Button>
-				</DropdownMenuItem> */}
-				{/* <DropdownMenuItem className='flex justify-center'>
-					<ThemeToggle />
-				</DropdownMenuItem> */}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

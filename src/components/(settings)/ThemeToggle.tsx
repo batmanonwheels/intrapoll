@@ -20,8 +20,8 @@ const ThemeToggle = ({}: ThemeToggleProps) => {
 		}
 	};
 	return (
-		<div className='my-3'>
-			<h3 className='my-2'>Site Theme</h3>
+		<div className='my-3 mx-1'>
+			<h3 className='my-2 '>Site Theme</h3>
 			<div className='flex flex-row justify-evenly'>
 				<Button
 					onClick={() => handleTheme(Theme.light)}
