@@ -11,7 +11,7 @@ const SettingsPage = async ({}: settingsPageProps) => {
 	const session = await getServerSession(authOptions);
 	return (
 		<section className='container h-full flex flex-col mx-auto px-2'>
-			{/* <h2 className='text-2xl'>Settings</h2> */}
+			<h2 className='text-2xl font-semibold my-2'>Settings</h2>
 			<MiniUserCard
 				name={session?.user.name}
 				username={session?.user.username}

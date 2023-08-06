@@ -34,11 +34,11 @@ const UserCard = async ({
 	return (
 		<Card
 			className={cn(
-				'h-fit border-none sticky top-[2.8rem] rounded-t-2xl z-5 shadow-sm dark:shadow-neutral-800'
+				'h-fit sticky top-[2.95rem] rounded-t-2xl z-5 shadow-sm dark:shadow-neutral-800'
 			)}
 		>
 			<CardHeader className={cn('flex flex-row gap-3 p-3 my-auto h-28')}>
-				<Avatar className={cn('h-20 w-20')}>
+				<Avatar className={cn('h-20 w-20 my-auto')}>
 					<AvatarImage src={image} alt={`${username}`} />
 					<AvatarFallback>{username.split('')[0]}</AvatarFallback>
 				</Avatar>
