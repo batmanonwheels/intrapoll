@@ -8,25 +8,16 @@ const PATCH = async (req: NextRequest) => {
 
 	if (!session?.user) return new Error('Unauthorized.');
 
-	const { username } = await req.json();
+	const { name } = await req.json();
 
-	const usernameTaken = await prisma.user.findFirst({
-		where: {
-			username,
-		},
-		select: {
-			username: true,
-		},
-	});
-
-	if (!!usernameTaken) return new Error('This username is already in use. :(');
+	const { id } = session.user;
 
 	const res = await prisma.user.update({
 		where: {
-			id: session?.user!.id,
+			id: parseInt(id) as number,
 		},
 		data: {
-			username,
+			name,
 		},
 	});
 

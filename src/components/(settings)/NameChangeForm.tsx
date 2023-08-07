@@ -18,24 +18,17 @@ import { Input } from '../ui/input';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 
-interface UsernameChangeFormProps {
-	username: string | undefined;
+interface NameChangeFormProps {
+	name: string | undefined;
 }
 //init form schema
 const formSchema = z
 	.object({
-		username: z
-			.string()
-			.min(5, 'The username must be 5 characters or more')
-			.max(32, 'The username must be 32 characters or less')
-			.regex(
-				/^[a-zA-Z0-9_]+$/,
-				'The username must contain only letters, numbers and underscores (_)'
-			),
+		name: z.string().max(24, 'The name must be 24 characters or less'),
 	})
 	.required();
 
-const UsernameChangeForm = ({}: UsernameChangeFormProps) => {
+const NameChangeForm = ({}: NameChangeFormProps) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { data: session, update } = useSession();
 	const router = useRouter();
@@ -43,21 +36,21 @@ const UsernameChangeForm = ({}: UsernameChangeFormProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			username: session?.user.username,
+			name: session?.user.name,
 		},
 	});
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		setIsLoading(true);
-		const { username } = values;
+		const { name } = values;
 		try {
-			const res = await axios.patch('api/username', {
-				username,
+			const res = await axios.patch('api/name', {
+				name,
 			});
 			router.refresh();
 		} catch (error: any) {
 			form.setError(
-				'username',
+				'name',
 				{ type: 'validate', message: error.response.data.message },
 				{
 					shouldFocus: true,
@@ -77,23 +70,15 @@ const UsernameChangeForm = ({}: UsernameChangeFormProps) => {
 				>
 					<FormField
 						control={form.control}
-						name='username'
+						name='name'
 						render={({ field }) => (
 							<FormItem className='flex-1'>
-								{/* <FormLabel>
-										Username <span className='text-red-600 opacity-90'>*</span>
-									</FormLabel> */}
 								<FormControl>
-									<div className='relative'>
-										<p className='absolute text-sm left-0 w-8 mb-1 inset-y-0 grid place-items-center text-gray-600'>
-											@
-										</p>
-										<Input
-											placeholder={session?.user.username}
-											{...field}
-											className='pl-6 flex-1'
-										/>
-									</div>
+									<Input
+										placeholder={session?.user.name}
+										{...field}
+										className='pl-3 flex-1'
+									/>
 								</FormControl>
 								{/* <FormDescription>
 										Username must be at least 5 characters.
@@ -118,4 +103,4 @@ const UsernameChangeForm = ({}: UsernameChangeFormProps) => {
 	);
 };
 
-export default UsernameChangeForm;
+export default NameChangeForm;

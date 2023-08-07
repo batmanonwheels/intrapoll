@@ -70,7 +70,6 @@ const SignInForm = ({ className, ...props }: SignInFormProps) => {
 					callbackUrl,
 				}
 			);
-			console.log(signInResponse);
 
 			if (signInResponse!.error) {
 				throw new Error(signInResponse!.error);

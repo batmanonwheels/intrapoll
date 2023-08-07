@@ -6,7 +6,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import AppleProvider from 'next-auth/providers/apple';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { UserWithSettings, UserWithSettingsAndAccount } from '@/types/prisma';
+import { UserWithSettings } from '@/types/prisma';
 import { UserSettings } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
@@ -92,16 +92,34 @@ export const authOptions: NextAuthOptions = {
 	session: { strategy: 'jwt' },
 	callbacks: {
 		jwt: async ({ token, account, user }) => {
+			if (account) console.log(account);
 			if (user) {
-				const u = user as unknown as Partial<UserWithSettings>;
-				token.id = u.id;
-				token.username = u.username;
-				token.createdAt = u.createdAt;
-				token.settings = u.settings;
+				const u = user as any as UserWithSettings;
+				token.id = u?.id;
+				token.username = u?.username;
+				token.createdAt = u?.createdAt;
+				token.settings = u?.settings;
 			}
+
+			const updateUser = await prisma.user.findFirst({
+				where: {
+					id: token.id as number,
+				},
+				select: {
+					id: true,
+					username: true,
+					createdAt: true,
+					settings: true,
+				},
+			});
+			token.id = updateUser?.id;
+			token.username = updateUser?.username;
+			token.createdAt = updateUser?.createdAt;
+			token.settings = updateUser?.settings;
 			return token;
 		},
 		session: async ({ session, token, user }) => {
+			if (user) console.log(user);
 			session.user.id = token.id as number;
 			session.user.username = token.username as string;
 			session.user.createdAt = token.createdAt as Date;
