@@ -29,10 +29,11 @@ const PATCH = async (req: NextRequest) => {
 		);
 	}
 	const { id } = session.user;
+	console.log(typeof id);
 
 	const res = await prisma.user.update({
 		where: {
-			id: parseInt(id) as number,
+			id,
 		},
 		data: {
 			username,

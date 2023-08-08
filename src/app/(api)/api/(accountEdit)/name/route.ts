@@ -24,7 +24,7 @@ const PATCH = async (req: NextRequest) => {
 
 	const res = await prisma.user.update({
 		where: {
-			id: parseInt(id) as number,
+			id,
 		},
 		data: {
 			name,
