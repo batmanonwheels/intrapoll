@@ -103,7 +103,7 @@ export const authOptions: NextAuthOptions = {
 
 			const updateUser = await prisma.user.findFirst({
 				where: {
-					id: token.id as number,
+					id: parseInt(token.id as string),
 				},
 				select: {
 					id: true,
