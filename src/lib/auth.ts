@@ -107,12 +107,14 @@ export const authOptions: NextAuthOptions = {
 				},
 				select: {
 					id: true,
+					name: true,
 					username: true,
 					createdAt: true,
 					settings: true,
 				},
 			});
 			token.id = updateUser?.id;
+			token.name = updateUser?.name;
 			token.username = updateUser?.username;
 			token.createdAt = updateUser?.createdAt;
 			token.settings = updateUser?.settings;
@@ -129,8 +131,6 @@ export const authOptions: NextAuthOptions = {
 	},
 	pages: {
 		signIn: '/sign-in',
-		// newUser: '/sign-up',
-		// verifyRequest: '/verify-email',
 		error: '/sign-in',
 	},
 	secret: process.env.NEXTAUTH_SECRET,

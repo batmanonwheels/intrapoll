@@ -31,7 +31,7 @@ const SettingsPage = async ({}: settingsPageProps) => {
 					<UsernameChangeForm username={session?.user.username} />
 				</div>
 				<div className='my-3'>
-					<h3 className='my-2'>Theme Preference</h3>
+					<h3 className='my-2'>Theme</h3>
 					<ThemeToggle />
 				</div>
 			</div>

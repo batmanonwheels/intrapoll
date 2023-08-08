@@ -91,6 +91,7 @@ const NameChangeForm = ({}: NameChangeFormProps) => {
 					<Button
 						type='submit'
 						className={cn('m-0')}
+						variant={'secondary'}
 						// disabled={
 						// 	typeof window !== 'undefined' ? true : form.formState.isValid
 						// }

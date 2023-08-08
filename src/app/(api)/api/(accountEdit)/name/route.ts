@@ -10,6 +10,16 @@ const PATCH = async (req: NextRequest) => {
 
 	const { name } = await req.json();
 
+	if (name === session.user.name) {
+		return new NextResponse(
+			JSON.stringify({
+				status: 'error',
+				message: 'This is the same name. >:(',
+			}),
+			{ status: 401 }
+		);
+	}
+
 	const { id } = session.user;
 
 	const res = await prisma.user.update({

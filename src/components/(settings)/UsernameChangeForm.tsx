@@ -80,9 +80,6 @@ const UsernameChangeForm = ({}: UsernameChangeFormProps) => {
 						name='username'
 						render={({ field }) => (
 							<FormItem className='flex-1'>
-								{/* <FormLabel>
-										Username <span className='text-red-600 opacity-90'>*</span>
-									</FormLabel> */}
 								<FormControl>
 									<div className='relative'>
 										<p className='absolute text-sm left-0 w-8 mb-1 inset-y-0 grid place-items-center text-gray-600'>
@@ -95,21 +92,12 @@ const UsernameChangeForm = ({}: UsernameChangeFormProps) => {
 										/>
 									</div>
 								</FormControl>
-								{/* <FormDescription>
-										Username must be at least 5 characters.
-									</FormDescription> */}
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 
-					<Button
-						type='submit'
-						className={cn('m-0')}
-						// disabled={
-						// 	typeof window !== 'undefined' ? true : form.formState.isValid
-						// }
-					>
+					<Button type='submit' variant={'secondary'} className={cn('m-0')}>
 						Submit
 					</Button>
 				</form>
