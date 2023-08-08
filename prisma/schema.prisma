@@ -76,6 +76,7 @@ model User {
   streak        Int           @default(0)
   longestStreak Int           @default(0)
   verifiedEmail DateTime?
+  createdAt     DateTime      @default(now()) @db.Timestamp(6)
   account       Account?
   friendOf      Friend[]      @relation("addressee")
   friends       Friend[]      @relation("requester")
