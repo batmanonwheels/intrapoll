@@ -75,17 +75,17 @@ const ThemeToggle = ({}: ThemeToggleProps) => {
 						control={form.control}
 						name='theme'
 						render={({ field }) => (
-							<FormItem className='w-full'>
+							<FormItem className={cn('w-full')}>
 								<Select
 									onValueChange={field.onChange}
 									// defaultValue={field.value}
 								>
 									<FormControl>
-										<SelectTrigger className='w-full'>
+										<SelectTrigger className={cn('w-full')}>
 											<SelectValue placeholder='Select your preferred theme' />
 										</SelectTrigger>
 									</FormControl>
-									<SelectContent className='w-full text-center'>
+									<SelectContent className={cn('w-full text-center')}>
 										<SelectItem value='light'>
 											{/* <SunIcon className='h-[1.1rem] w-[1.1rem]  transition-all rotate-0 scale-100' /> */}
 											Light
