@@ -6,6 +6,8 @@ import ThemeToggle from '@/components/(settings)/ThemeToggle';
 import { authOptions } from '@/lib/auth';
 import UsernameChangeForm from '@/components/(settings)/UsernameChangeForm';
 import NameChangeForm from '@/components/(settings)/NameChangeForm';
+import SignOutButton from '@/components/(auth)/SignOutButton';
+import EmailChangeFormAndVerify from '@/components/(settings)/EmailChangeFormAndVerify';
 
 interface settingsPageProps {}
 
@@ -22,6 +24,7 @@ const SettingsPage = async ({}: settingsPageProps) => {
 				createdAt={session?.user.createdAt}
 			/>
 			<div className='mx-1'>
+				{/* <div className='my-3 outline-1 outline-gray-500'> */}
 				<div className='my-3'>
 					<h3 className='my-2'>Name</h3>
 					<NameChangeForm name={session?.user.name} />
@@ -31,8 +34,16 @@ const SettingsPage = async ({}: settingsPageProps) => {
 					<UsernameChangeForm username={session?.user.username} />
 				</div>
 				<div className='my-3'>
+					<h3 className='my-2'>Email</h3>
+					<EmailChangeFormAndVerify email={session?.user.email} />
+				</div>
+				{/* </div> */}
+				<div className='my-3'>
 					<h3 className='my-2'>Theme</h3>
 					<ThemeToggle />
+				</div>
+				<div className='my-3'>
+					<SignOutButton />
 				</div>
 			</div>
 		</section>
