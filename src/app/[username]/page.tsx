@@ -3,7 +3,7 @@ import ResponseCard from '@/components/(user)/ResponseCard';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import { UserWithFriends, UserWithFriendsAndResponses } from '@/types/prisma';
+import { UserWithFriends } from '@/types/prisma';
 import { User } from '@prisma/client';
 
 interface userProfileProps {

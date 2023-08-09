@@ -1,19 +1,37 @@
-// import { Card, CardContent, CardHeader } from '@/components/ui/card';
+// 'use client';
 
-'use client';
+import Poll from '@/components/Poll';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+import axios from 'axios';
+import moment from 'moment';
 
-import { signOut, useSession } from 'next-auth/react';
+export default async function Home() {
+	const date = moment(Date.now()).format('MMMM D YYYY');
+	const [month, day, year] = date.split(' ');
 
-export default function Home() {
-	const { data, status } = useSession();
+	// const todaysPoll = await axios.get('/api/todays-poll');
+	const { data: poll } = await axios.get(
+		'http://localhost:3000/api/todays-poll'
+	);
+
+	const { expiresAt } = poll.poll;
+
+	const expiresIn = moment().to(expiresAt);
+
 	return (
-		<section className='h-full w-full mx-auto overflow-scroll snap-mandatory snap-y '>
-			<div id='todays-poll' className='h-full snap-start'>
-				<h2 className='text-xl font-semibold my-2 px-1'>Poll of the Day</h2>
-			</div>
-			<div id='stats' className='h-full snap-start'>
+		<section className='flex flex-col h-full'>
+			<h2 className='text-xl font-semibold mt-2 mb-0 px-1'>
+				{`${month} ${day}th, ${year}`}
+			</h2>
+			<h3 className='text-lg font-normal my-0 px-1 text-muted-foreground'>
+				{`Todays poll expires ${expiresIn}`}
+			</h3>
+			{/* <Separator className={cn('mx-auto w-11/12')} /> */}
+			<Poll poll={poll.poll} />
+			{/* <div id='stats' className='snap-start'>
 				<h2 className='text-xl font-semibold my-2 px-1'>Statistics</h2>
-			</div>
+			</div> */}
 		</section>
 	);
 }

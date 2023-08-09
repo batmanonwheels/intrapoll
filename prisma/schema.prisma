@@ -19,32 +19,42 @@ model Friend {
 }
 
 model Poll {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now()) @db.Timestamp(6)
-  expiresAt DateTime   @default(dbgenerated("(now() + '24:00:00'::interval)")) @db.Timestamp(6)
-  expired   Boolean    @default(false)
+  id        Int          @id @default(autoincrement())
+  createdAt DateTime     @default(now()) @db.Timestamp(6)
+  expiresAt DateTime     @default(dbgenerated("(now() + '24:00:00'::interval)")) @db.Timestamp(6)
+  expired   Boolean      @default(false)
   question  String
-  options   String[]
+  options   PollOption[]
   results   Response[]
 }
 
-model Response {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now()) @db.Timestamp(6)
-  updatedAt DateTime   @default(now()) @db.Timestamp(6)
-  response  String?
-  option    PollOption
-  userId    Int
-  pollId    Int
-  poll      Poll       @relation(fields: [pollId], references: [id])
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+model PollOption {
+  id     Int     @id @default(autoincrement())
+  choice String
+  image  String?
+  pollId Int
+  poll   Poll    @relation(fields: [pollId], references: [id])
 }
 
-enum PollOption {
+model Response {
+  id        Int              @id @default(autoincrement())
+  createdAt DateTime         @default(now()) @db.Timestamp(6)
+  updatedAt DateTime         @default(now()) @db.Timestamp(6)
+  response  String?
+  option    PollOptionNumber
+  userId    Int
+  pollId    Int
+  poll      Poll             @relation(fields: [pollId], references: [id])
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+enum PollOptionNumber {
   one
   two
   three
   four
+  five
+  six
 }
 
 model UserSettings {

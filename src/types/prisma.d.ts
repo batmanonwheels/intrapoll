@@ -43,12 +43,21 @@ type UserWithFriendsAndResponses = Prisma.UserGetPayload<{
 	include: typeof userIncludeFriendsAndResponses;
 }>;
 
-const pollIncludeResponses = Prisma.validator<Prisma.PollInclude>()({
-	responses: true,
+const pollIncludeResults = Prisma.validator<Prisma.PollInclude>()({
+	results: true,
 });
 
-type PollWithResponses = Prisma.PollGetPayload<{
-	include: typeof pollIncludeResponses;
+type PollWithResults = Prisma.PollGetPayload<{
+	include: typeof pollIncludeResults;
+}>;
+
+const pollIncludeOptionsAndResults = Prisma.validator<Prisma.PollInclude>()({
+	options: true,
+	results: true,
+});
+
+type PollWithOptionsAndResults = Prisma.PollGetPayload<{
+	include: typeof pollIncludeOptionsAndResults;
 }>;
 
 const responseIncludeUser = Prisma.validator<Prisma.ResponseInclude>()({
