@@ -52,7 +52,12 @@ type PollWithResults = Prisma.PollGetPayload<{
 }>;
 
 const pollIncludeOptionsAndResults = Prisma.validator<Prisma.PollInclude>()({
-	options: true,
+	options: {
+		select: {
+			choice: true,
+			image: true,
+		},
+	},
 	results: true,
 });
 

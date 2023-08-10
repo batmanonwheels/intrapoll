@@ -12,8 +12,8 @@ model Friend {
   status      FriendStatus?
   addresseeId Int
   requesterId Int
-  addressee   User          @relation("addressee", fields: [addresseeId], references: [id])
-  requester   User          @relation("requester", fields: [requesterId], references: [id])
+  addressee   User          @relation("addressee", fields: [addresseeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  requester   User          @relation("requester", fields: [requesterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([requesterId, addresseeId])
 }
@@ -29,22 +29,22 @@ model Poll {
 }
 
 model PollOption {
-  id     Int     @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
   choice String
-  image  String?
+  image  String
   pollId Int
-  poll   Poll    @relation(fields: [pollId], references: [id])
+  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Response {
   id        Int              @id @default(autoincrement())
   createdAt DateTime         @default(now()) @db.Timestamp(6)
   updatedAt DateTime         @default(now()) @db.Timestamp(6)
-  response  String?
+  response  String
   option    PollOptionNumber
   userId    Int
   pollId    Int
-  poll      Poll             @relation(fields: [pollId], references: [id])
+  poll      Poll             @relation(fields: [pollId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user      User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
