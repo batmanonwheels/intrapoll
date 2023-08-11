@@ -8,7 +8,7 @@ interface MiniUserCardProps {
 	username: string | undefined;
 	image: string | undefined;
 	createdAt: Date | undefined;
-	className: string | undefined;
+	className?: string | undefined;
 }
 
 const MiniUserCard = async ({
