@@ -1,19 +1,54 @@
-// import { Card, CardContent, CardHeader } from '@/components/ui/card';
+// 'use client';
 
-'use client';
+import Poll from '@/components/Poll';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+import { Card, CardHeader } from '@/components/ui/card';
+import axios from 'axios';
+import moment from 'moment';
 
-import { signOut, useSession } from 'next-auth/react';
+export default async function Home() {
+	const date = moment(Date.now()).format('MMMM D YYYY');
+	const [month, day, year] = date.split(' ');
 
-export default function Home() {
-	const { data, status } = useSession();
+	const { data: poll } = await axios.get(
+		'http://localhost:3000/api/todays-poll'
+	);
+
+	if (poll === null) {
+		return (
+			<section className='flex flex-col h-full'>
+				<div className='flex flex-row w-full justify-between  my-2 px-1'>
+					<h2 className='text-xl font-semibold'>
+						{`${month} ${day}th, ${year}`}
+					</h2>
+				</div>
+				<p className='text-base text-muted-foreground mt-0 px-1'>
+					{`Todays poll does not exist. :(`}
+				</p>
+				<div className='h-full px-1 gap-1 flex flex-col justify-evenly'>
+					<h2 className='text-base font-semibold px-1  mb-1 mt-3'></h2>
+				</div>
+			</section>
+		);
+	}
+
+	const { id, expiresAt } = poll.poll;
+
+	const expiresIn = moment().to(expiresAt);
+
 	return (
-		<section className='h-full w-full mx-auto overflow-scroll snap-mandatory snap-y '>
-			<div id='todays-poll' className='h-full snap-start'>
-				<h2 className='text-xl font-semibold my-2 px-1'>Poll of the Day</h2>
+		<section className='flex flex-col h-full'>
+			<div className='flex flex-row w-full justify-between  my-2 px-1'>
+				<h2 className='text-xl font-semibold'>
+					{`${month} ${day}th, ${year}`}
+				</h2>
+				{/* <p className='text-base font-medium text-muted'>{`No. ${id}`}</p> */}
 			</div>
-			<div id='stats' className='h-full snap-start'>
-				<h2 className='text-xl font-semibold my-2 px-1'>Statistics</h2>
-			</div>
+			<p className='text-base text-muted-foreground mt-0 px-1'>
+				{`Todays poll expires ${expiresIn}`}
+			</p>
+			<Poll poll={poll.poll} />
 		</section>
 	);
 }

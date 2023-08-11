@@ -25,11 +25,11 @@ const NavMenu = async ({}: NavMenuProps) => {
 	return (
 		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger asChild>
-				<Button variant='ghost' className=' p-0'>
+				<Button variant='ghost' className='p-1'>
 					<HamburgerMenuIcon className='h-7 w-10' />
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align='center' className='border-none shadow-none'>
+			<DropdownMenuContent align='center' className=''>
 				<DropdownMenuItem>
 					<Link
 						href={'/'}
