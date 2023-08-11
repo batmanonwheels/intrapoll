@@ -8,6 +8,7 @@ interface MiniUserCardProps {
 	username: string | undefined;
 	image: string | undefined;
 	createdAt: Date | undefined;
+	className: string | undefined;
 }
 
 const MiniUserCard = async ({
@@ -15,13 +16,14 @@ const MiniUserCard = async ({
 	username,
 	image,
 	createdAt,
+	className,
 }: MiniUserCardProps) => {
 	const createdMonthYear = moment(createdAt).format('MMM YYYY');
 
 	const memberSince = `Member since ${createdMonthYear}`;
 
 	return (
-		<Card className={cn('shadow-sm  dark:shadow-neutral-800')}>
+		<Card className={cn(`${className} shadow-sm  dark:shadow-neutral-800`)}>
 			<CardHeader className={cn('flex flex-row gap-3 px-3 py-1 my my-auto')}>
 				<Avatar className={cn('h-14 w-14 my-auto')}>
 					<AvatarImage src={image} alt={`${name}`} />

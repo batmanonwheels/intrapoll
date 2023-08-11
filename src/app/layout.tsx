@@ -3,12 +3,12 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/theme-provider';
-import NavBar from '@/components/(navbar)/NavBar';
 import { Toaster } from '@/components/ui/toaster';
 import { Provider } from '@/app/provider';
 import { getServerSession } from 'next-auth';
 import { prisma } from '@/lib/prisma';
 import { authOptions } from '@/lib/auth';
+import Header from '@/components/(header)/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -47,7 +47,7 @@ export default async function RootLayout({
 						defaultTheme={theme !== null ? theme : 'system'}
 						enableSystem={theme === 'system' ? true : false}
 					>
-						<NavBar />
+						<Header />
 						<main className='flex-1 flex flex-col min-h-fit px-1 pt-12 rounded-t-2xl'>
 							{children}
 						</main>

@@ -1,19 +1,19 @@
 import NavMenu from './NavMenu';
 import Link from 'next/link';
 
-interface NavBarProps {}
+interface HeaderProps {}
 
-const NavBar = async ({}: NavBarProps) => {
+const Header = async ({}: HeaderProps) => {
 	return (
-		<nav className='fixed top-0 min-w-full min-h-fit flex justify-between px-2 py-2 bg-inherit z-10 pb-1'>
+		<header className='fixed top-0 min-w-full min-h-fit flex justify-between px-2 py-2 bg-inherit z-10 pb-1'>
 			<Link href={'/'}>
 				<h1 className='text-3xl font-extrabold tracking-tight lg:text-5xl'>
 					interpoll
 				</h1>
 			</Link>
 			<NavMenu />
-		</nav>
+		</header>
 	);
 };
 
-export default NavBar;
+export default Header;
