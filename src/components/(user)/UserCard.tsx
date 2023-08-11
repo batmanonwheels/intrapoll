@@ -34,7 +34,7 @@ const UserCard = async ({
 	return (
 		<Card
 			className={cn(
-				'h-fit sticky top-[2.95rem] rounded-t-2xl z-5 shadow-sm dark:shadow-neutral-800'
+				'h-fit sticky top-[2.95rem]  z-5 shadow-sm dark:shadow-neutral-800'
 			)}
 		>
 			<CardHeader className={cn('flex flex-row gap-3 p-3 my-auto h-28')}>

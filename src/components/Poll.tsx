@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from './ui/toast';
 import Link from 'next/link';
+import moment from 'moment';
 
 interface PollProps {
 	poll: PollWithOptionsAndResults;
@@ -78,7 +79,11 @@ const Poll = ({ poll }: PollProps) => {
 
 	return (
 		<div className='h-full px-1 gap-1 flex flex-col justify-evenly'>
-			<h2 className='text-base font-semibold px-1  mb-1 mt-3'>{question}</h2>
+			<div className='flex flex-row w-full my-2 px-1'>
+				<p className='text-base font-medium text-muted-foreground pr-2'>{`No. ${id}`}</p>
+				<h2 className='text-base font-semibold'>{question}</h2>
+			</div>
+
 			<div>
 				{options.map(({ choice, image }, i) => {
 					return (
@@ -115,7 +120,8 @@ const Poll = ({ poll }: PollProps) => {
 					type='button'
 					variant={'secondary'}
 					onClick={() => handleSubmit()}
-					className={`flex-1 bg-none p-1`}
+					className={`flex-1 bg-none p-1 text-lg`}
+					disabled={pollResponse === '' ? true : false}
 				>
 					Submit
 				</Button>
@@ -124,7 +130,7 @@ const Poll = ({ poll }: PollProps) => {
 						type='button'
 						variant={'destructive'}
 						onClick={() => setPollResponse('')}
-						className='w-3/12 bg-none px-1'
+						className='w-3/12 bg-none px-1 transition-all animate-in'
 					>
 						Reset
 					</Button>

@@ -21,7 +21,7 @@ const MiniUserCard = async ({
 	const memberSince = `Member since ${createdMonthYear}`;
 
 	return (
-		<Card className={cn('shadow-sm dark:shadow-neutral-800')}>
+		<Card className={cn('shadow-sm  dark:shadow-neutral-800')}>
 			<CardHeader className={cn('flex flex-row gap-3 px-3 py-1 my my-auto')}>
 				<Avatar className={cn('h-14 w-14 my-auto')}>
 					<AvatarImage src={image} alt={`${name}`} />

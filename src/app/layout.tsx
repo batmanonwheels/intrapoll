@@ -6,7 +6,6 @@ import { ThemeProvider } from '@/components/theme-provider';
 import NavBar from '@/components/(navbar)/NavBar';
 import { Toaster } from '@/components/ui/toaster';
 import { Provider } from '@/app/provider';
-
 import { getServerSession } from 'next-auth';
 import { prisma } from '@/lib/prisma';
 import { authOptions } from '@/lib/auth';

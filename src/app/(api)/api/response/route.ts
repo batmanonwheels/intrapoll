@@ -82,10 +82,13 @@ const POST = async (req: NextRequest) => {
 
 		const newResponse: Response = await prisma.response.create({
 			data: {
-				userId,
-				pollId: pollIsCurrent.id,
+				userId: userId as number,
+				pollId: pollIsCurrent.id as number,
 				option: answer.option,
 				response: answer.response,
+			},
+			include: {
+				poll: true,
 			},
 		});
 
