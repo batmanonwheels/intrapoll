@@ -1,16 +1,11 @@
-// 'use client';
-
+// 'use client'
 import Poll from '@/components/Poll';
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
-import { Card, CardHeader } from '@/components/ui/card';
 import axios from 'axios';
 import moment from 'moment';
 
 export default async function Home() {
 	const date = moment(Date.now()).format('MMMM D YYYY');
 	const [month, day, year] = date.split(' ');
-
 	const { data: poll } = await axios.get(
 		'http://localhost:3000/api/todays-poll'
 	);
@@ -33,7 +28,7 @@ export default async function Home() {
 		);
 	}
 
-	const { id, expiresAt } = poll.poll;
+	const { expiresAt } = poll.poll;
 
 	const expiresIn = moment().to(expiresAt);
 
@@ -43,7 +38,6 @@ export default async function Home() {
 				<h2 className='text-xl font-semibold'>
 					{`${month} ${day}th, ${year}`}
 				</h2>
-				{/* <p className='text-base font-medium text-muted'>{`No. ${id}`}</p> */}
 			</div>
 			<p className='text-base text-muted-foreground mt-0 px-1'>
 				{`Todays poll expires ${expiresIn}`}
