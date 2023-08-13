@@ -18,17 +18,14 @@ export default async function Home() {
 	const expiresIn = moment().to(expiresAt);
 
 	return (
-		<section className='flex flex-col h-full'>
-			<Card className={cn('shadow-sm dark:shadow-neutral-800')}>
-				<CardHeader className={cn('px-3 py-1 my-auto')}>
-					<h2 className='text-xl font-medium text-gray-700 dark:text-gray-100'>
-						{`${month} ${day}th, ${year}'s poll stats`}
-					</h2>
-					{/* <h3 className='text-base text-muted-foreground mt-0'>
-						{`Todays poll expires ${expiresIn}`}
-					</h3> */}
-				</CardHeader>
-			</Card>
-		</section>
+		<>
+			<section className='flex flex-col h-fit'>
+				<h2 className='text-xl font-semibold my-2 px-1'>Statistics</h2>
+				<p className='text-base text-muted-foreground mt-0 px-1'>
+					{`${month} ${day}th, ${year}`}
+				</p>
+			</section>
+			<section className='flex flex-col h-fit'></section>
+		</>
 	);
 }

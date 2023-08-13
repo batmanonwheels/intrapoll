@@ -50,7 +50,7 @@ const NavMenu = async ({}: NavMenuProps) => {
 					</DropdownMenuItem>
 					<DropdownMenuItem>
 						<Link
-							href={'/#stats'}
+							href={'/stats'}
 							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
 						>
 							<Chart className='h-[1.5rem] w-[1.5rem]' />
