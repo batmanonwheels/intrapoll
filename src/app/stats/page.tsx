@@ -1,7 +1,5 @@
 // 'use client';
 
-import { cn } from '@/lib/utils';
-import { Card, CardHeader } from '@/components/ui/card';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -9,13 +7,10 @@ export default async function Home() {
 	const date = moment(Date.now()).format('MMMM D YYYY');
 	const [month, day, year] = date.split(' ');
 
-	const { data: poll } = await axios.get(
-		'http://localhost:3000/api/todays-poll'
+	const { data: responseData } = await axios.get(
+		'http://localhost:3000/api/todays-responses',
+		{ params: { pollId: 1 } }
 	);
-
-	const { expiresAt } = poll.poll;
-
-	const expiresIn = moment().to(expiresAt);
 
 	return (
 		<>
