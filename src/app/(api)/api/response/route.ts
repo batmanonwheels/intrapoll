@@ -31,6 +31,7 @@ const POST = async (req: NextRequest) => {
 						select: {
 							choice: true,
 							image: true,
+							votes: true,
 						},
 					},
 					results: true,
