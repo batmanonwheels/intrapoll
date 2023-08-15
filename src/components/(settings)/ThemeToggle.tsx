@@ -75,7 +75,7 @@ const ThemeToggle = ({}: ThemeToggleProps) => {
 						control={form.control}
 						name='theme'
 						render={({ field }) => (
-							<FormItem className={cn('w-full')}>
+							<FormItem className={cn('w-full')} id='theme'>
 								<Select
 									onValueChange={field.onChange}
 									// defaultValue={field.value}

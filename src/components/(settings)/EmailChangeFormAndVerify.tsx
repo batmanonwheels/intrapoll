@@ -96,6 +96,7 @@ const EmailChangeFormAndVerify = ({}: EmailChangeFormAndVerifyProps) => {
 									<Input
 										placeholder={session?.user.email}
 										{...field}
+										id='email'
 										className='w-full'
 									/>
 								</FormControl>
