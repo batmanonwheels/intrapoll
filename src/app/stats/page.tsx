@@ -59,21 +59,21 @@ export default async function Home() {
 								'h-[6.95rem] w-full relative rounded-md bg-gradient-to-r from-zinc-300 to-transparent dark:from-zinc-700 dark:to-transparent border-zinc-900 '
 							}
 						>
-							<h3
-								className={`absolute bottom-1 right-2 text-lg font-semibold text-zinc-100 backdrop-blur-xs z-20 mix-blend-luminosity`}
+							<h2
+								className={`absolute bottom-2 right-2 text-xl font-semibold text-zinc-100 backdrop-blur-xs z-20 mix-blend-luminosity`}
 							>
 								{`${option}`}{' '}
 								<span className='text-sm font-medium'>{`${percentage}, (${votes} ${
 									votes === 1 ? 'vote' : 'votes'
 								})`}</span>
-							</h3>
+							</h2>
 							<img
 								src={image!}
 								alt={option}
 								className={`h-full w-full rounded-md object-cover border-0 outline-0`}
 							/>
 							<hr
-								className={`absolute bottom-0 h-[.25rem] rounded-md border-0 bg-gradient-to-t  to-slate-200 from-slate-50 ${
+								className={`absolute bottom-[0.1rem] h-[.25rem] rounded-md rounded-l-none border-0 bg-gradient-to-t  to-slate-100 from-slate-50 ${
 									percentage === '100%' ? 'rounded-r-md' : ''
 								} z-10 `}
 								style={{
