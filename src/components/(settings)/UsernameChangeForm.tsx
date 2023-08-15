@@ -88,6 +88,7 @@ const UsernameChangeForm = ({}: UsernameChangeFormProps) => {
 										<Input
 											placeholder={session?.user.username}
 											{...field}
+											id='username'
 											className='pl-6 flex-1'
 										/>
 									</div>

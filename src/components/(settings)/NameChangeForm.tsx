@@ -77,6 +77,7 @@ const NameChangeForm = ({}: NameChangeFormProps) => {
 									<Input
 										placeholder={session?.user.name}
 										{...field}
+										id='name'
 										className='pl-3 flex-1'
 									/>
 								</FormControl>

@@ -121,7 +121,7 @@ const Poll = ({ poll }: PollProps) => {
 					type='button'
 					variant={'default'}
 					onClick={() => handleSubmit()}
-					className={`flex-1 bg-none p-1 text-lg`}
+					className={`flex-1 bg-none p-1`}
 					disabled={pollResponse === '' ? true : false}
 				>
 					Submit

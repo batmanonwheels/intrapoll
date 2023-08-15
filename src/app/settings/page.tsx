@@ -8,6 +8,8 @@ import UsernameChangeForm from '@/components/(settings)/UsernameChangeForm';
 import NameChangeForm from '@/components/(settings)/NameChangeForm';
 import SignOutButton from '@/components/(auth)/SignOutButton';
 import EmailChangeFormAndVerify from '@/components/(settings)/EmailChangeFormAndVerify';
+import PhotoUpload from '@/components/(settings)/PhotoUpload';
+import { Label } from '@/components/ui/label';
 
 interface settingsPageProps {}
 
@@ -25,24 +27,29 @@ const SettingsPage = async ({}: settingsPageProps) => {
 			/>
 			<div className='mx-1'>
 				{/* <div className='my-3 outline-1 outline-gray-500'> */}
-				<div className='my-3'>
-					<h3 className='my-2'>Name</h3>
+				<div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
+					<Label htmlFor='name'>Name</Label>
 					<NameChangeForm name={session?.user.name} />
 				</div>
-				<div className='my-3'>
-					<h3 className='my-2'>Username</h3>
+				<div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
+					<Label htmlFor='username'>Username</Label>
 					<UsernameChangeForm username={session?.user.username} />
 				</div>
-				<div className='my-3'>
-					<h3 className='my-2'>Email</h3>
+				<div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
+					<Label htmlFor='email'>Email</Label>
 					<EmailChangeFormAndVerify email={session?.user.email} />
 				</div>
+				<div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
+					<Label htmlFor='picture'>Picture</Label>
+					<PhotoUpload image={session?.user.image} />
+				</div>
 				{/* </div> */}
-				<div className='my-3'>
-					<h3 className='my-2'>Theme</h3>
+				<div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
+					<Label htmlFor='theme'>Theme</Label>
 					<ThemeToggle />
 				</div>
-				<div className='my-3'>
+				<div className='grid w-full max-w-sm items-center gap-1.5 my-4'>
+					{/* <Label htmlFor='picture'>Picture</Label> */}
 					<SignOutButton />
 				</div>
 			</div>
