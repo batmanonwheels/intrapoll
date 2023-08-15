@@ -27,11 +27,11 @@ const UserProfile = async ({ params }: userProfileProps) => {
 			name: true,
 			username: true,
 			image: true,
-			// streak: true,
-			// longestStreak: true,
-			// verifiedEmail: true,
-			friends: {},
-			// responses: true,
+			streak: true,
+			longestStreak: true,
+			verifiedEmail: true,
+			friends: true,
+			responses: true,
 		},
 	});
 
@@ -50,7 +50,6 @@ const UserProfile = async ({ params }: userProfileProps) => {
 	const friends = 409;
 	const streak = 3;
 	const longestStreak = 16;
-	//
 
 	const responses = [
 		{
@@ -123,47 +122,6 @@ const UserProfile = async ({ params }: userProfileProps) => {
 				'https://images.unsplash.com/photo-1557080768-1b6176358e51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJpbmNlfGVufDB8MHwwfHx8Mg%3D%3D&auto=format&fit=crop&w=800&q=60',
 			liked: true,
 		},
-
-		// {
-		// 	id: 6,
-		// 	date: 'July 27th, 2023',
-		// 	response: 'Apples',
-		// 	option: 'ONE',
-		// 	prompt: 'Vanilla or Chocolate?',
-		// 	image:
-		// 		'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-		// 	liked: true,
-		// },
-		// {
-		// 	id: 7,
-		// 	date: 'July 26th, 2023',
-		// 	response: 'Apples',
-		// 	option: 'ONE',
-		// 	prompt: 'Apples or Oranges?',
-		// 	image:
-		// 		'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-		// 	liked: true,
-		// },
-		// {
-		// 	id: 8,
-		// 	date: 'July 27th, 2023',
-		// 	response: 'Apples',
-		// 	option: 'ONE',
-		// 	prompt: 'Vanilla or Chocolate?',
-		// 	image:
-		// 		'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-		// 	liked: true,
-		// },
-		// {
-		// 	id: 9,
-		// 	date: 'July 26th, 2023',
-		// 	response: 'Apples',
-		// 	option: 'ONE',
-		// 	prompt: 'Apples or Oranges?',
-		// 	image:
-		// 		'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-		// 	liked: true,
-		// },
 	];
 
 	return (

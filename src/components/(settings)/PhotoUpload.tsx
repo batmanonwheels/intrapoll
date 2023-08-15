@@ -17,10 +17,15 @@ const PhotoUpload = ({ image }: PhotoUploadProps) => {
 	const [profilePicKey, setProfilePicKey] = useState<string>('');
 
 	const handleChangeProfilePic = async () => {
-		const res = await axios.patch('api/profilepic', {
-			profilePicKey,
-			profilePicUrl,
-		});
+		console.log(profilePicKey, profilePicUrl);
+		try {
+			const res = await axios.patch('api/profile-pic', {
+				key: profilePicKey,
+				url: profilePicUrl,
+			});
+		} catch (error: any) {
+			console.log(error);
+		}
 	};
 
 	const handleUploadImage = async (e: FormEvent<HTMLInputElement>) => {
@@ -28,7 +33,9 @@ const PhotoUpload = ({ image }: PhotoUploadProps) => {
 			setIsLoading(true);
 			if ((e.target as HTMLInputElement)!.files === null) return;
 
-			const files: File[] = Array.from((e.target as HTMLInputElement).files);
+			const fileList: FileList = (e.target as HTMLInputElement).files!;
+
+			const files: File[] = Array.from(fileList);
 
 			const res = await uploadFiles({
 				files,
@@ -49,7 +56,7 @@ const PhotoUpload = ({ image }: PhotoUploadProps) => {
 	return (
 		<div className='flex flex-row justify-evenly gap-2'>
 			<div className='flex flex-col justify-evenly gap-2'>
-				<div className='grid w-full max-w-sm items-center gap-1.5'>
+				<div className='grid w-full max-w-sm items-center gap-2'>
 					<Input
 						id='picture'
 						type='file'
@@ -58,7 +65,7 @@ const PhotoUpload = ({ image }: PhotoUploadProps) => {
 						max={1}
 					/>
 				</div>
-				<div className='flex flex-row'>
+				<div className='flex flex-row gap-2'>
 					<Button
 						type='submit'
 						className={cn('m-0 flex-1 bg-none p-1')}
