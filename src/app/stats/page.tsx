@@ -1,34 +1,101 @@
-// 'use client';
-
-import { cn } from '@/lib/utils';
-import { Card, CardHeader } from '@/components/ui/card';
 import axios from 'axios';
 import moment from 'moment';
+import Image from 'next/image';
+
+interface Responses {
+	option: string;
+	image: string;
+	votes: number;
+	percentage: string;
+	totalVotes: number;
+}
+
+interface ResponseData {
+	data: {
+		id: number;
+		question: string;
+		responses: Responses[];
+	};
+}
 
 export default async function Home() {
 	const date = moment(Date.now()).format('MMMM D YYYY');
 	const [month, day, year] = date.split(' ');
 
-	const { data: poll } = await axios.get(
-		'http://localhost:3000/api/todays-poll'
+	const { data: responseData }: ResponseData = await axios.get(
+		'http://localhost:3000/api/stats',
+		{ params: { pollId: 1 } }
 	);
 
-	const { expiresAt } = poll.poll;
+	const { id, question, responses } = responseData;
 
-	const expiresIn = moment().to(expiresAt);
+	console.log(responses);
 
 	return (
-		<section className='flex flex-col h-full'>
-			<Card className={cn('shadow-sm dark:shadow-neutral-800')}>
-				<CardHeader className={cn('px-3 py-1 my-auto')}>
-					<h2 className='text-xl font-medium text-gray-700 dark:text-gray-100'>
-						{`${month} ${day}th, ${year}'s poll stats`}
-					</h2>
-					{/* <h3 className='text-base text-muted-foreground mt-0'>
-						{`Todays poll expires ${expiresIn}`}
-					</h3> */}
-				</CardHeader>
-			</Card>
+		<section className='flex flex-col h-full min-h-full max-h-full'>
+			<div className='flex flex-row w-full justify-between my-2 px-1'>
+				<h2 className='text-xl font-semibold'>
+					{`${month} ${day}th, ${year}`}
+				</h2>
+			</div>
+			<p className='text-base text-muted-foreground mt-0 px-1'>
+				{`Daily Statistics`}
+			</p>
+			<div className='h-fit w-full gap-1 flex flex-row my-4 px-2 relative'>
+				<p className='text-base font-semibold'>
+					<span className='text-base font-medium text-muted-foreground pr-2'>{`No. ${id}`}</span>
+					{question}
+				</p>
+				<p className='absolute -bottom-4 left-2 text-xs text-muted-foreground'>{`(${
+					responses[0].totalVotes
+				} total ${responses[0].totalVotes === 1 ? 'vote' : 'votes'})`}</p>
+			</div>
+			<div className='h-auto p-2 pb-3 flex gap-2 flex-col justify-evenly'>
+				{responses.map(({ option, image, votes, percentage }, i) => {
+					return (
+						<div
+							key={option}
+							className={
+								'h-[6.95rem] w-full relative rounded-md bg-gradient-to-r from-zinc-300 to-transparent dark:from-zinc-700 dark:to-transparent border-zinc-900 '
+							}
+						>
+							<h2
+								className={`absolute bottom-2 right-2 text-xl font-semibold text-zinc-100 backdrop-blur-xs z-20 mix-blend-luminosity`}
+							>
+								{`${option}`}{' '}
+								<span className='text-sm font-medium'>{`${percentage}, (${votes} ${
+									votes === 1 ? 'vote' : 'votes'
+								})`}</span>
+							</h2>
+							<img
+								src={image!}
+								alt={option}
+								className={`h-full w-full rounded-md object-cover border-0 outline-0`}
+							/>
+							<hr
+								className={`absolute bottom-[0.1rem] h-[.25rem] rounded-md rounded-l-none border-0 bg-gradient-to-t  to-slate-100 from-slate-50 ${
+									percentage === '100%' ? 'rounded-r-md' : ''
+								} z-10 `}
+								style={{
+									width: percentage,
+								}}
+							/>
+							{/* <Image
+								src={image}
+								alt={option}
+								height={500}
+								width={500}
+								style={{
+									width: width + '%',
+									height: '100%',
+								}}
+								className={`rounded-sm object-cover`}
+								objectFit='cover'
+							/> */}
+						</div>
+					);
+				})}
+			</div>
 		</section>
 	);
 }

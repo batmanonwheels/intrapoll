@@ -56,6 +56,8 @@ const pollIncludeOptionsAndResults = Prisma.validator<Prisma.PollInclude>()({
 		select: {
 			choice: true,
 			image: true,
+			votes: true,
+			percentage: string,
 		},
 	},
 	results: true,

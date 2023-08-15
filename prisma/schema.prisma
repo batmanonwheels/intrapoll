@@ -20,19 +20,21 @@ model Friend {
 }
 
 model Poll {
-  id        Int          @id @default(autoincrement())
-  createdAt DateTime     @default(now()) @db.Timestamp(6)
-  expiresAt DateTime     @default(dbgenerated("(now() + '24:00:00'::interval)")) @db.Timestamp(6)
-  expired   Boolean      @default(false)
-  question  String
-  options   PollOption[]
-  results   Response[]
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now()) @db.Timestamp(6)
+  expiresAt  DateTime     @default(dbgenerated("(now() + '24:00:00'::interval)")) @db.Timestamp(6)
+  expired    Boolean      @default(false)
+  question   String
+  totalVotes Int          @default(0)
+  options    PollOption[]
+  results    Response[]
 }
 
 model PollOption {
   id     Int    @id @default(autoincrement())
   choice String
   image  String
+  votes  Int    @default(0)
   pollId Int
   poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

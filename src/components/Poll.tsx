@@ -74,14 +74,15 @@ const Poll = ({ poll }: PollProps) => {
 			}
 		} finally {
 			setIsLoading(false);
+			router.push('/stats');
 		}
 	};
 
 	return (
 		<div className='h-full px-1 gap-1 flex flex-col justify-evenly'>
 			<div className='flex flex-row w-full my-2 px-1'>
-				<p className='text-base font-medium text-muted-foreground pr-2'>{`No. ${id}`}</p>
-				<h2 className='text-base font-semibold'>{question}</h2>
+				<h3 className='text-base font-medium text-muted-foreground pr-2'>{`No. ${id}`}</h3>
+				<h3 className='text-base font-semibold'>{question}</h3>
 			</div>
 
 			<div>
@@ -94,7 +95,7 @@ const Poll = ({ poll }: PollProps) => {
 							onClick={(e) => handlePollResponse(e, choice, i)}
 						>
 							<h3
-								className={`absolute bottom-1 left-2 text-lg font-medium mix-blend-luminosity ${
+								className={`absolute bottom-1 right-2 text-lg font-semibold text-zinc-100 backdrop-blur-xs z-20 mix-blend-luminosity ${
 									pollResponse !== '' && pollResponse !== choice
 										? 'opacity-30'
 										: ''
@@ -118,7 +119,7 @@ const Poll = ({ poll }: PollProps) => {
 			<div className='w-full flex flex-row gap-2 bottom-0'>
 				<Button
 					type='button'
-					variant={'secondary'}
+					variant={'default'}
 					onClick={() => handleSubmit()}
 					className={`flex-1 bg-none p-1 text-lg`}
 					disabled={pollResponse === '' ? true : false}

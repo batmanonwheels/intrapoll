@@ -66,7 +66,7 @@ const NameChangeForm = ({}: NameChangeFormProps) => {
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className=' w-full flex flex-row gap-4 justify-between'
+					className=' w-full flex flex-row gap-2 justify-between'
 				>
 					<FormField
 						control={form.control}

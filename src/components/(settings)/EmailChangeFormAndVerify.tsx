@@ -85,7 +85,7 @@ const EmailChangeFormAndVerify = ({}: EmailChangeFormAndVerifyProps) => {
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className=' w-full flex flex-row flex-wrap gap-4 justify-between'
+					className=' w-full flex flex-row flex-wrap gap-2 justify-between'
 				>
 					<FormField
 						control={form.control}
@@ -103,7 +103,7 @@ const EmailChangeFormAndVerify = ({}: EmailChangeFormAndVerifyProps) => {
 							</FormItem>
 						)}
 					/>
-					<div className={'flex justify-between gap-1 w-full'}>
+					<div className={'flex justify-between gap-2 w-full'}>
 						<Button
 							type='submit'
 							variant={'secondary'}

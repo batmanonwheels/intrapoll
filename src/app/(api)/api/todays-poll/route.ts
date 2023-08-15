@@ -11,6 +11,7 @@ export const GET = async () => {
 					select: {
 						choice: true,
 						image: true,
+						votes: true,
 					},
 				},
 				results: true,

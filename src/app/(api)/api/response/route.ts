@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { PollWithOptionsAndResults } from '@/types/prisma';
-import { Response } from '@prisma/client';
+import { Poll, PollOption, Response } from '@prisma/client';
 import moment from 'moment';
 
 const POST = async (req: NextRequest) => {
@@ -31,6 +31,7 @@ const POST = async (req: NextRequest) => {
 						select: {
 							choice: true,
 							image: true,
+							votes: true,
 						},
 					},
 					results: true,
@@ -70,7 +71,6 @@ const POST = async (req: NextRequest) => {
 				userId,
 			},
 		});
-
 		if (responseExists)
 			return new NextResponse(
 				"You've already answered todays poll! See you tomorrow!",
@@ -89,6 +89,29 @@ const POST = async (req: NextRequest) => {
 			},
 			include: {
 				poll: true,
+			},
+		});
+
+		const updatePollVotes = await prisma.poll.update({
+			where: {
+				id: pollIsCurrent.id,
+			},
+			data: {
+				totalVotes: {
+					increment: 1,
+				},
+			},
+		});
+
+		const updateOptionResponseCount = await prisma.pollOption.updateMany({
+			where: {
+				pollId: pollIsCurrent.id,
+				choice: answer.response,
+			},
+			data: {
+				votes: {
+					increment: 1,
+				},
 			},
 		});
 

@@ -1,6 +1,9 @@
 {
 	"name": "intrapoll",
 	"version": "0.1.0",
+	"prisma": {
+		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+	},
 	"private": true,
 	"scripts": {
 		"dev": "docker compose up -d && next dev",
@@ -24,7 +27,6 @@
 		"@radix-ui/react-toast": "^1.1.4",
 		"@supabase/supabase-js": "^2.31.0",
 		"@tanstack/react-query": "^4.29.25",
-		"@types/node": "20.4.0",
 		"@types/react": "18.2.14",
 		"@types/react-dom": "18.2.6",
 		"autoprefixer": "10.4.14",
@@ -55,7 +57,9 @@
 		"@types/bcrypt": "^5.0.0",
 		"@types/bcryptjs": "^2.4.2",
 		"@types/md5": "^2.3.2",
+		"@types/node": "^20.5.0",
 		"@types/nodemailer": "^6.4.8",
-		"prisma": "^5.1.1"
+		"prisma": "^5.1.1",
+		"ts-node": "^10.9.1"
 	}
 }
