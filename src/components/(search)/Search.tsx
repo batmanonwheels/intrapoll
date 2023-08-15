@@ -78,7 +78,7 @@ const Search = ({}: SearchProps) => {
 			</section>
 
 			<section className='h-fit'>
-				{searchResults.length <= 0 ? (
+				{searchResults.length <= 0 || searchValue === '' ? (
 					<p className='text-xs font-medium my-2 px-1'>
 						Try searching for a user!
 					</p>
@@ -105,11 +105,11 @@ const Search = ({}: SearchProps) => {
 										className={'border-none shadow-none dark:shadow-none'}
 									/>
 								</Link>
-								<Separator
+								{/* <Separator
 									className={`${
 										i === searchResults.length - 1 ? 'h-0 ' : ''
 									} mx-auto w-11/12`}
-								/>
+								/> */}
 							</Suspense>
 						))}
 					</div>

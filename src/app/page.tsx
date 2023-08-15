@@ -34,7 +34,7 @@ export default async function Home() {
 
 	return (
 		<section className='flex flex-col h-full'>
-			<div className='flex flex-row w-full justify-between  my-2 px-1'>
+			<div className='flex flex-row w-full justify-between my-2 px-1'>
 				<h2 className='text-xl font-semibold'>
 					{`${month} ${day}th, ${year}`}
 				</h2>

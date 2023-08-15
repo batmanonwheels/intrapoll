@@ -31,46 +31,51 @@ const NavMenu = async ({}: NavMenuProps) => {
 						<HamburgerMenuIcon className='h-7 w-10' />
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align='center' className=''>
-					<DropdownMenuItem>
+				<DropdownMenuContent align='center'>
+					<DropdownMenuItem className='flex flex-col'>
 						<Link
 							href={'/'}
 							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
 						>
 							<Home className='h-[1.5rem] w-[1.5rem]' />
 						</Link>
+						<p className='text-xs text-muted-foreground'>home</p>
 					</DropdownMenuItem>
-					<DropdownMenuItem>
+					<DropdownMenuItem className='flex flex-col'>
 						<Link
 							href={'/search'}
 							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
 						>
 							<Search className='h-[1.5rem] w-[1.5rem]' />
 						</Link>
+						<p className='text-xs text-muted-foreground'>search</p>
 					</DropdownMenuItem>
-					<DropdownMenuItem>
+					<DropdownMenuItem className='flex flex-col'>
 						<Link
 							href={'/stats'}
 							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
 						>
 							<Chart className='h-[1.5rem] w-[1.5rem]' />
 						</Link>
+						<p className='text-xs text-muted-foreground'>stats</p>
 					</DropdownMenuItem>
-					<DropdownMenuItem>
+					<DropdownMenuItem className='flex flex-col'>
 						<Link
 							href={'/profile'}
 							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
 						>
 							<User className='h-[1.5rem] w-[1.5rem]' />
 						</Link>
+						<p className='text-xs text-muted-foreground'>profile</p>
 					</DropdownMenuItem>
-					<DropdownMenuItem>
+					<DropdownMenuItem className='flex flex-col'>
 						<Link
 							href={'/settings'}
 							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
 						>
 							<Settings className='h-[1.5rem] w-[1.5rem]' />
 						</Link>
+						<p className='text-xs text-muted-foreground'>settings</p>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
