@@ -74,6 +74,7 @@ const Poll = ({ poll }: PollProps) => {
 			}
 		} finally {
 			setIsLoading(false);
+			router.push('/stats');
 		}
 	};
 
