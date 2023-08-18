@@ -46,7 +46,9 @@ const Poll = ({ poll }: PollProps) => {
 				throw new Error('You need to be signed in to answer polls!');
 			}
 			const res = await axios.post('api/response', { answer });
+			router.push('/stats');
 		} catch (error: any) {
+			console.log(error);
 			if (
 				error.message === "Cannot read properties of null (reading 'user')" ||
 				error.message === 'You need to be signed in to answer polls!'
@@ -74,7 +76,6 @@ const Poll = ({ poll }: PollProps) => {
 			}
 		} finally {
 			setIsLoading(false);
-			router.push('/stats');
 		}
 	};
 
