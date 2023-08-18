@@ -26,17 +26,17 @@ export default async function RootLayout({
 
 	let theme: string | null = null;
 
-	if (!!session) {
-		const res = await prisma.userSettings.findUnique({
-			where: {
-				userId: session!.user.id,
-			},
-			select: {
-				theme: true,
-			},
-		});
-		let theme = res?.theme;
-	}
+	// if (!!session) {
+	// 	const res = await prisma.userSettings.findUnique({
+	// 		where: {
+	// 			userId: session!.user.id,
+	// 		},
+	// 		select: {
+	// 			theme: true,
+	// 		},
+	// 	});
+	// 	let theme = res?.theme;
+	// }
 
 	return (
 		<html lang='en' className={cn(`${inter.className}`)}>
