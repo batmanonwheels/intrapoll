@@ -9,7 +9,7 @@ import {
 	HomeIcon as Home,
 	PersonIcon as User,
 	GearIcon as Settings,
-	BarChartIcon as Chart,
+	BarChartIcon as Stats,
 	MagnifyingGlassIcon as Search,
 } from '@radix-ui/react-icons';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -17,11 +17,20 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { useSelectedLayoutSegment } from 'next/navigation';
 
 interface NavMenuProps {}
 
 const NavMenu = async ({}: NavMenuProps) => {
 	const session = await getServerSession(authOptions);
+
+	const navBarOptions = [
+		{ name: 'home', href: '/', icon: Home },
+		{ name: 'search', href: '/search', icon: Search },
+		{ name: 'stats', href: '/stats', icon: Stats },
+		{ name: 'profile', href: '/profile', icon: User },
+		{ name: 'settings', href: '/settings', icon: Settings },
+	];
 
 	return (
 		<nav>
@@ -32,51 +41,19 @@ const NavMenu = async ({}: NavMenuProps) => {
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align='center'>
-					<DropdownMenuItem className='flex flex-col'>
-						<Link
-							href={'/'}
-							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
-						>
-							<Home className='h-[1.5rem] w-[1.5rem]' />
-						</Link>
-						<p className='text-xs text-muted-foreground'>home</p>
-					</DropdownMenuItem>
-					<DropdownMenuItem className='flex flex-col'>
-						<Link
-							href={'/search'}
-							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
-						>
-							<Search className='h-[1.5rem] w-[1.5rem]' />
-						</Link>
-						<p className='text-xs text-muted-foreground'>search</p>
-					</DropdownMenuItem>
-					<DropdownMenuItem className='flex flex-col'>
-						<Link
-							href={'/stats'}
-							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
-						>
-							<Chart className='h-[1.5rem] w-[1.5rem]' />
-						</Link>
-						<p className='text-xs text-muted-foreground'>stats</p>
-					</DropdownMenuItem>
-					<DropdownMenuItem className='flex flex-col'>
-						<Link
-							href={'/profile'}
-							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
-						>
-							<User className='h-[1.5rem] w-[1.5rem]' />
-						</Link>
-						<p className='text-xs text-muted-foreground'>profile</p>
-					</DropdownMenuItem>
-					<DropdownMenuItem className='flex flex-col'>
-						<Link
-							href={'/settings'}
-							className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
-						>
-							<Settings className='h-[1.5rem] w-[1.5rem]' />
-						</Link>
-						<p className='text-xs text-muted-foreground'>settings</p>
-					</DropdownMenuItem>
+					{navBarOptions.map((option, i) => (
+						<DropdownMenuItem className='flex flex-col' key={i}>
+							<Link
+								href={option.href}
+								className={cn(
+									buttonVariants({ variant: 'ghost', size: 'icon' })
+								)}
+							>
+								<option.icon className='h-[1.5rem] w-[1.5rem]' />
+							</Link>
+							<p className='text-xs text-muted-foreground'>{option.name}</p>
+						</DropdownMenuItem>
+					))}
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</nav>
