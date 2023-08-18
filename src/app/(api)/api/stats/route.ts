@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { PollWithOptionsAndResults } from '@/types/prisma';
+import moment from 'moment';
 
 export const GET = async (req: any) => {
 	try {
@@ -31,7 +32,10 @@ export const GET = async (req: any) => {
 
 		if (!poll) throw new Error('Poll not found');
 
+		const date = moment(poll.createdAt).format('MMMM D YYYY');
+
 		const { id, question, totalVotes, options: choices } = poll;
+
 		//add percentage of total votes to each choice object
 		choices[0].percentage = (choices[0].votes / totalVotes) * 100 + '%';
 		choices[1].percentage = (choices[1].votes / totalVotes) * 100 + '%';
@@ -41,6 +45,7 @@ export const GET = async (req: any) => {
 		return NextResponse.json({
 			id,
 			question,
+			date,
 			responses: [
 				{
 					option: choices[0].choice,
