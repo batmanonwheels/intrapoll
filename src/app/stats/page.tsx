@@ -1,6 +1,11 @@
 import axios from 'axios';
 import moment from 'moment';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
+
+interface StatsProps {
+	searchParams?: { [key: string]: string | string[] | undefined };
+}
 
 interface Responses {
 	option: string;
@@ -14,22 +19,22 @@ interface ResponseData {
 	data: {
 		id: number;
 		question: string;
+		date: string;
 		responses: Responses[];
 	};
 }
 
-export default async function Home() {
-	const date = moment(Date.now()).format('MMMM D YYYY');
-	const [month, day, year] = date.split(' ');
+export default async function Stats({ searchParams }: StatsProps) {
+	const pollId = searchParams ? searchParams.pollId : 1;
 
 	const { data: responseData }: ResponseData = await axios.get(
 		'http://localhost:3000/api/stats',
-		{ params: { pollId: 1 } }
+		{ params: { pollId } }
 	);
 
-	const { id, question, responses } = responseData;
+	const { id, question, responses, date } = responseData;
 
-	console.log(responses);
+	const [month, day, year] = date.split(' ');
 
 	return (
 		<section className='flex flex-col h-full min-h-full max-h-full'>
