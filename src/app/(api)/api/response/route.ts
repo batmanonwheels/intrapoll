@@ -10,13 +10,13 @@ const POST = async (req: NextRequest) => {
 	try {
 		const session = await getServerSession(authOptions);
 
+		const { answer } = await req.json();
+
 		if (!session)
 			return new NextResponse('Unauthorized', { status: 401, url: '/sign-in' });
 
 		if (!session.user)
 			return new NextResponse('Unauthorized', { status: 401, url: '/sign-in' });
-
-		const { answer } = await req.json();
 
 		if (!answer.id || !answer.response || !answer.option)
 			return new NextResponse('Invalid Poll Response', {
@@ -28,15 +28,16 @@ const POST = async (req: NextRequest) => {
 			await prisma.poll.findFirstOrThrow({
 				include: {
 					options: {
-						select: {
-							choice: true,
-							image: true,
-							votes: true,
+						where: {
+							choice: {
+								equals: answer.response,
+							},
 						},
 					},
 					results: true,
 				},
 			});
+		console.log(pollIsCurrent);
 
 		if (moment(pollIsCurrent.expiresAt).isBefore()) {
 			const expirePost = await prisma.poll.update({
@@ -86,6 +87,7 @@ const POST = async (req: NextRequest) => {
 				pollId: pollIsCurrent.id as number,
 				option: answer.option,
 				response: answer.response,
+				image: pollIsCurrent.options![0].image,
 			},
 			include: {
 				poll: true,
