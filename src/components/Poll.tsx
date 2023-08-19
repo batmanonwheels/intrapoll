@@ -16,6 +16,23 @@ interface PollProps {
 	poll: PollWithOptionsAndResults;
 }
 
+type Responses = {
+	option: string;
+	image: string;
+	votes: number;
+	percentage: string;
+	totalVotes: number;
+};
+
+type ResponseData = {
+	data: {
+		id: number;
+		question: string;
+		date: string;
+		responses: Responses[];
+	};
+};
+
 const Poll = ({ poll }: PollProps) => {
 	const { data: session, status } = useSession();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -45,10 +62,16 @@ const Poll = ({ poll }: PollProps) => {
 			if (!session!.user) {
 				throw new Error('You need to be signed in to answer polls!');
 			}
-			const res = await axios.post('api/response', { answer });
+			let results = await axios.post('api/response', { answer });
+			const todaysPoll = {
+				answered: true,
+				expiry: expiresAt,
+			};
+
+			localStorage.setItem('pollStatus', JSON.stringify(todaysPoll));
+
 			router.push('/stats');
 		} catch (error: any) {
-			console.log(error);
 			if (
 				error.message === "Cannot read properties of null (reading 'user')" ||
 				error.message === 'You need to be signed in to answer polls!'
@@ -85,58 +108,77 @@ const Poll = ({ poll }: PollProps) => {
 				<h3 className='text-base font-medium text-muted-foreground pr-2'>{`No. ${id}`}</h3>
 				<h3 className='text-base font-semibold'>{question}</h3>
 			</div>
-
-			<div>
+			<div className='p-1 pb-3 flex flex-col justify-around gap-2'>
 				{options.map(({ choice, image }, i) => {
 					return (
 						<Button
 							key={choice}
-							className={cn('bg-none h-fit w-6/12 relative p-1')}
-							variant={'ghost'}
-							onClick={(e) => handlePollResponse(e, choice, i)}
-						>
-							<h3
-								className={`absolute bottom-1 right-2 text-lg font-semibold text-zinc-100 backdrop-blur-xs z-20 mix-blend-luminosity ${
+							className={cn(
+								`${
 									pollResponse !== '' && pollResponse !== choice
-										? 'opacity-30'
-										: ''
-								}`}
+										? 'h-[5.9rem] rounded-sm opacity-60 '
+										: `h-[6.95rem] rounded-md`
+								} w-full relative rounded-md bg-gradient-to-r from-zinc-300 to-transparent dark:from-zinc-700 dark:to-transparent border-zinc-900 p-0 transition-all`
+							)}
+							variant={'ghost'}
+							onClick={(e) => {
+								handlePollResponse(e, choice, i);
+							}}
+						>
+							<h2
+								className={`absolute bottom-2 right-2 text-xl font-semibold text-zinc-100 backdrop-blur-xs z-20 mix-blend-luminosity`}
 							>
-								{choice}
-							</h3>
+								{`${choice}`}{' '}
+								{/* {results !== null && results.data ? (
+									<span className='text-sm font-medium'>{`${
+										results.data.responses.
+									}, (${results.data.responses.votes} ${
+										results.data.votes === 1 ? 'vote' : 'votes'
+									})`}</span>
+								) : null} */}
+							</h2>
 							<img
 								src={image!}
 								alt={choice}
-								className={`h-52 w-full rounded-sm object-cover ${
-									pollResponse !== '' && pollResponse !== choice
-										? 'opacity-30 animate-pulse'
-										: ''
+								className={`h-full w-full rounded-md object-cover border-0 outline-0 transition-opacity${
+									pollResponse !== '' && pollResponse !== choice ? '' : ''
 								}`}
 							/>
+							{/* <hr
+									className={`absolute bottom-[0.1rem] h-[.25rem] rounded-md rounded-l-none border-0 bg-gradient-to-t  to-slate-100 from-slate-50 ${
+										percentage === '100%' ? 'rounded-r-md' : ''
+									} z-10 `}
+									style={{
+										width: percentage,
+									}}
+								/> */}
 						</Button>
 					);
 				})}
 			</div>
-			<div className='w-full flex flex-row gap-2 bottom-0'>
+
+			<div
+				className={` ${
+					pollResponse !== '' ? 'opacity-100' : 'opacity-0'
+				} w-full flex flex-row gap-2 bottom-0 transition-opacity animate-out`}
+			>
 				<Button
 					type='button'
 					variant={'default'}
 					onClick={() => handleSubmit()}
-					className={`flex-1 bg-none p-1`}
+					className={`flex-1 bg-none p-1 `}
 					disabled={pollResponse === '' ? true : false}
 				>
 					Submit
 				</Button>
-				{pollResponse !== '' && (
-					<Button
-						type='button'
-						variant={'destructive'}
-						onClick={() => setPollResponse('')}
-						className='w-3/12 bg-none px-1 transition-all animate-in'
-					>
-						Reset
-					</Button>
-				)}
+				<Button
+					type='button'
+					variant={'destructive'}
+					onClick={() => setPollResponse('')}
+					className={`w-3/12 bg-none px-1 transition-all animate-in`}
+				>
+					Reset
+				</Button>
 			</div>
 		</div>
 	);

@@ -1,16 +1,19 @@
 // 'use client'
 import Poll from '@/components/Poll';
+import { authOptions } from '@/lib/auth';
 import axios from 'axios';
 import moment from 'moment';
+import { getServerSession } from 'next-auth';
 
 export default async function Home() {
-	const date = moment(Date.now()).format('MMMM D YYYY');
-	const [month, day, year] = date.split(' ');
-	const { data: poll } = await axios.get(
+	const { data: pollData } = await axios.get(
 		'http://localhost:3000/api/todays-poll'
 	);
 
-	if (poll === null) {
+	const date = moment(Date.now()).format('MMMM D YYYY');
+	const [month, day, year] = date.split(' ');
+
+	if (pollData === null) {
 		return (
 			<section className='flex flex-col h-full'>
 				<div className='flex flex-row w-full justify-between  my-2 px-1'>
@@ -28,7 +31,9 @@ export default async function Home() {
 		);
 	}
 
-	const { expiresAt } = poll.poll;
+	const { poll } = pollData;
+
+	const { expiresAt } = poll;
 
 	const expiresIn = moment().to(expiresAt);
 
@@ -42,7 +47,7 @@ export default async function Home() {
 			<p className='text-base text-muted-foreground mt-0 px-1'>
 				{`Todays poll expires ${expiresIn}`}
 			</p>
-			<Poll poll={poll.poll} />
+			<Poll poll={poll} />
 		</section>
 	);
 }

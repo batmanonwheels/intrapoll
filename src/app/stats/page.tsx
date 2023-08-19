@@ -29,10 +29,18 @@ export default async function Stats({ searchParams }: StatsProps) {
 
 	const { data: responseData }: ResponseData = await axios.get(
 		'http://localhost:3000/api/stats',
-		{ params: { pollId } }
+		{ params: { pollId: 1 } }
 	);
 
+	if (responseData == null) {
+		return (
+			<section className='flex flex-col h-full min-h-full max-h-full'></section>
+		);
+	}
+
 	const { id, question, responses, date } = responseData;
+
+	console.log(id, question, responses, date);
 
 	const [month, day, year] = date.split(' ');
 
