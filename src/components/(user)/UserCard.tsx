@@ -2,13 +2,11 @@ import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardHeader } from '@/components/ui/card';
 import { authOptions } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { getServerSession } from 'next-auth';
 import { Button, buttonVariants } from '../ui/button';
 import ShareButton from '../ShareButton';
-import { UserWithFriendsAndResponses } from '@/types/prisma';
 
 interface UserCardProps {
 	id: number;
@@ -34,7 +32,7 @@ const UserCard = async ({
 	return (
 		<Card
 			className={cn(
-				'h-fit sticky top-[2.95rem]  z-5 shadow-sm dark:shadow-neutral-800'
+				'h-[100%] sticky top-[2.95rem]  z-5 shadow-sm dark:shadow-neutral-800'
 			)}
 		>
 			<CardHeader className={cn('flex flex-row gap-3 p-3 my-auto h-28')}>
@@ -99,7 +97,6 @@ const UserCard = async ({
 					</p>
 				</div>
 			</div>
-			{/* <Separator className={cn('mx-auto w-full mt-3')} /> */}
 		</Card>
 	);
 };

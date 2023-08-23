@@ -21,7 +21,7 @@ const POST = async (req: NextRequest) => {
 		if (!answer.id || !answer.response || !answer.option)
 			return new NextResponse('Invalid Poll Response', {
 				status: 401,
-				url: '/sign-in',
+				url: '/',
 			});
 
 		const pollIsCurrent: Partial<PollWithOptionsAndResults> =
@@ -37,27 +37,26 @@ const POST = async (req: NextRequest) => {
 				},
 			});
 
-		if (moment(pollIsCurrent.expiresAt).isBefore()) {
-			const expirePost = await prisma.poll.update({
-				where: {
-					id: pollIsCurrent.id,
-				},
-				data: {
-					expired: true,
-				},
-			});
+		// if (moment(pollIsCurrent.expiresAt).isBefore()) {
+		// 	const expirePost = await prisma.poll.update({
+		// 		where: {
+		// 			id: pollIsCurrent.id,
+		// 		},
+		// 		data: {
+		// 			expired: true,
+		// 		},
+		// 	});
 
-			return new NextResponse(
-				'This poll has expired, please try again in a bit',
-				{
-					status: 401,
-					url: '/',
-				}
-			);
-		}
+		// 	return NextResponse.json({
+		// 		error: {
+		// 			message: 'This poll has expired, please try again in a bit',
+		// 		},
+		// 		status: 401,
+		// 	});
+		// }
 
 		if (pollIsCurrent.id !== answer.id)
-			return new NextResponse('This poll may be expired', {
+			return new NextResponse('An error has occurred.', {
 				status: 401,
 				url: '/',
 			});
@@ -70,6 +69,7 @@ const POST = async (req: NextRequest) => {
 				userId,
 			},
 		});
+
 		if (responseExists)
 			return new NextResponse(
 				"You've already answered todays poll! See you tomorrow!",

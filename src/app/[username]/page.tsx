@@ -4,12 +4,9 @@ import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import {
-	ResponseWithPoll,
-	UserWithFriends,
 	UserWithFriendsAndResponses,
 	UserWithFriendsAndResponsesAndPolls,
 } from '@/types/prisma';
-import { User } from '@prisma/client';
 import moment from 'moment';
 
 interface userProfileProps {
@@ -61,8 +58,6 @@ const UserProfile = async ({ params }: userProfileProps) => {
 	const friends = 409;
 	const streak = 3;
 	const longestStreak = 16;
-
-	// let responses = undefined;
 
 	// const responses = [
 	// 	{
@@ -148,7 +143,7 @@ const UserProfile = async ({ params }: userProfileProps) => {
 				longestStreak={longestStreak}
 				friends={friends}
 			/>
-			<div className='mx-2 my-auto'>
+			<div className='mx-2 my-auto h-[90%]'>
 				<h3 className='ml-1 mb-1 mt-3 text-gray-600 dark:text-gray-300'>{`${
 					name.split(' ')[0]
 				}'s Poll Responses`}</h3>

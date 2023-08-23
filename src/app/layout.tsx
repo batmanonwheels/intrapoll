@@ -35,12 +35,12 @@ export default async function RootLayout({
 	// 			theme: true,
 	// 		},
 	// 	});
-	// 	let theme = res?.theme;
+	// theme = res?.theme;
 	// }
 
 	return (
 		<html lang='en' className={cn(`${inter.className}`)}>
-			<body className='flex flex-col h-screen bg-grey-50 dark:bg-grey-500 antialiased box-border scroll-smooth overflow-x-hidden'>
+			<body className='flex flex-col h-[100svh] bg-grey-50 dark:bg-grey-500 antialiased box-border scroll-smooth overflow-x-hidden'>
 				<Provider>
 					<ThemeProvider
 						attribute='class'
@@ -48,7 +48,7 @@ export default async function RootLayout({
 						enableSystem={theme === 'system' ? true : false}
 					>
 						<Header />
-						<main className='flex-1 flex flex-col min-h-fit px-1 pt-12 rounded-t-2xl'>
+						<main className='flex-1 flex flex-col min-h-full px-1 pt-12 rounded-t-2xl'>
 							{children}
 						</main>
 						<Toaster />
