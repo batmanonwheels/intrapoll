@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useSession } from 'next-auth/react';
@@ -16,16 +17,33 @@ interface PollProps {
 	poll: PollWithOptionsAndResults;
 }
 
+type Responses = {
+	option: string;
+	image: string;
+	votes: number;
+	percentage: string;
+	totalVotes: number;
+};
+
+type ResponseData = {
+	id: number;
+	question: string;
+	date: string;
+	responses: Responses[];
+	error?: string;
+};
+
 const Poll = ({ poll }: PollProps) => {
 	const { data: session, status } = useSession();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isPollAnswered, setIsPollAnswered] = useState<boolean>(false);
 	const [pollResponse, setPollResponse] = useState<string>('');
 	const [pollOption, setPollOption] = useState<string>('');
+	const [responseData, setResponseData] = useState<Responses[]>([]);
 	const router = useRouter();
 	const { toast } = useToast();
 
-	const { id, createdAt, expiresAt, expired, question, options } = poll;
+	const { id, question, options } = poll;
 
 	const numberToWord = ['one', 'two', 'three', 'four', 'five', 'six'];
 
@@ -45,8 +63,21 @@ const Poll = ({ poll }: PollProps) => {
 			if (!session!.user) {
 				throw new Error('You need to be signed in to answer polls!');
 			}
-			const res = await axios.post('api/response', { answer });
+
+			const { data } = await axios.post('api/response', {
+				answer,
+			});
+
+			setResponseData(data.responses);
+
+			const todaysPoll = {
+				id,
+				answered: true,
+			};
+
+			localStorage.setItem('pollStatus', JSON.stringify(todaysPoll));
 		} catch (error: any) {
+			console.log(error.message);
 			if (
 				error.message === "Cannot read properties of null (reading 'user')" ||
 				error.message === 'You need to be signed in to answer polls!'
@@ -74,70 +105,102 @@ const Poll = ({ poll }: PollProps) => {
 			}
 		} finally {
 			setIsLoading(false);
-			router.push('/stats');
+			setPollResponse('');
 		}
 	};
 
 	return (
-		<div className='h-full px-1 gap-1 flex flex-col justify-evenly'>
-			<div className='flex flex-row w-full my-2 px-1'>
-				<h3 className='text-base font-medium text-muted-foreground pr-2'>{`No. ${id}`}</h3>
-				<h3 className='text-base font-semibold'>{question}</h3>
-			</div>
-
-			<div>
-				{options.map(({ choice, image }, i) => {
-					return (
-						<Button
-							key={choice}
-							className={cn('bg-none h-fit w-6/12 relative p-1')}
-							variant={'ghost'}
-							onClick={(e) => handlePollResponse(e, choice, i)}
-						>
-							<h3
-								className={`absolute bottom-1 right-2 text-lg font-semibold text-zinc-100 backdrop-blur-xs z-20 mix-blend-luminosity ${
-									pollResponse !== '' && pollResponse !== choice
-										? 'opacity-30'
-										: ''
-								}`}
-							>
-								{choice}
-							</h3>
-							<img
-								src={image!}
-								alt={choice}
-								className={`h-52 w-full rounded-sm object-cover ${
-									pollResponse !== '' && pollResponse !== choice
-										? 'opacity-30 animate-pulse'
-										: ''
-								}`}
-							/>
-						</Button>
-					);
-				})}
-			</div>
-			<div className='w-full flex flex-row gap-2 bottom-0'>
-				<Button
-					type='button'
-					variant={'default'}
-					onClick={() => handleSubmit()}
-					className={`flex-1 bg-none p-1`}
-					disabled={pollResponse === '' ? true : false}
-				>
-					Submit
-				</Button>
-				{pollResponse !== '' && (
+		<section className='p-1 pb-1 flex flex-col justify-between h-[82.5%] gap-1'>
+			{options.map(({ choice, image }, i) => {
+				return (
 					<Button
-						type='button'
-						variant={'destructive'}
-						onClick={() => setPollResponse('')}
-						className='w-3/12 bg-none px-1 transition-all animate-in'
+						key={choice}
+						className={cn(
+							`${
+								pollResponse !== '' && pollResponse !== choice
+									? 'h-[15%] rounded-sm opacity-60 '
+									: `${
+											pollResponse !== choice ? 'h-[23.5%]' : 'h-[38%]'
+									  } rounded-md`
+							} justify-normal w-full relative rounded-md bg-gradient-to-r from-zinc-300 to-transparent dark:from-zinc-700 dark:to-transparent border-zinc-900 p-0 transition-all`
+						)}
+						variant={'ghost'}
+						onClick={(e) => {
+							{
+								responseData.length > 0
+									? null
+									: handlePollResponse(e, choice, i);
+							}
+						}}
 					>
-						Reset
+						<h2
+							className={`absolute bottom-2 right-2 text-xl font-semibold text-zinc-100 backdrop-blur-xs z-20 mix-blend-luminosity`}
+						>
+							{`${choice}`}
+							<span
+								className={`text-sm font-medium w-auto ${
+									responseData.length > 0 ? 'opacity-100' : 'opacity-0'
+								} transition-all duration-1000 ease-out`}
+							>
+								{responseData.length > 0 &&
+									` ${responseData[i].percentage}, (${responseData[i].votes} ${
+										responseData[i].votes === 1 ? 'vote' : 'votes'
+									})`}
+							</span>
+						</h2>
+
+						<img
+							src={image!}
+							alt={choice}
+							className={`h-full w-full rounded-md object-cover border-0 outline-0 transition-all${
+								pollResponse !== '' && pollResponse !== choice ? '' : ''
+							}`}
+						/>
+						<hr
+							className={`absolute bottom-[0.1rem] h-[.25rem] rounded-md rounded-l-none border-none bg-gray-50 dark:bg-grey-500${
+								responseData.length > 0
+									? responseData[i].percentage === '100%'
+										? 'rounded-r-md'
+										: ''
+									: ''
+							} z-10 transition-all duration-1000 ease-out`}
+							style={{
+								width:
+									responseData.length > 0 ? responseData[i].percentage : '0%',
+							}}
+						/>
 					</Button>
-				)}
+				);
+			})}
+			<div
+				className={` ${
+					pollResponse !== ''
+						? 'opacity-100 h-[6%] mb-2'
+						: 'opacity-0 h-[0%] mb-0'
+				}  w-full flex flex-row gap-2 transition-all animate-out mb-2`}
+			>
+				{pollResponse !== '' ? (
+					<>
+						<Button
+							type='button'
+							variant={'default'}
+							onClick={() => handleSubmit()}
+							className={`flex-1 bg-none p-1 h-full transition-all animate-in`}
+						>
+							Submit
+						</Button>
+						<Button
+							type='button'
+							variant={'destructive'}
+							onClick={() => setPollResponse('')}
+							className={`w-3/12 bg-none px-1 h-full transition-all animate-in`}
+						>
+							Reset
+						</Button>
+					</>
+				) : null}
 			</div>
-		</div>
+		</section>
 	);
 };
 

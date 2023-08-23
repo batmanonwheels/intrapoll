@@ -52,7 +52,7 @@ const Search = ({}: SearchProps) => {
 					className='pl-8 flex-1 text-base'
 				/>
 				<Select onValueChange={(value) => setParams(value)}>
-					<SelectTrigger className='absolute text-base right-0 w-20 mb-1 inset-y-0 border-none focus:border-none focus:ring-0'>
+					<SelectTrigger className='absolute text-base right-0 w-20 mb-1 inset-y-0 border-none focus:border-none focus:ring-0 shadow-none'>
 						<SelectValue placeholder='User' defaultValue={'user'} />
 					</SelectTrigger>
 					<SelectContent>

@@ -43,6 +43,7 @@ model Response {
   id        Int              @id @default(autoincrement())
   createdAt DateTime         @default(now()) @db.Timestamp(6)
   updatedAt DateTime         @default(now()) @db.Timestamp(6)
+  image     String
   response  String
   option    PollOptionNumber
   userId    Int

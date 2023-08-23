@@ -19,6 +19,16 @@ module.exports = {
 			backdropBlur: {
 				xs: '1px',
 			},
+			height: {
+				quart: '25%',
+				half: '50%',
+				'3quart': '75%',
+			},
+			width: {
+				quart: '25%',
+				half: '50%',
+				'3quart': '75%',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -72,6 +82,11 @@ module.exports = {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
+				'slide-open': '',
+			},
+			transitionProperty: {
+				width: 'width',
+				height: 'height',
 			},
 		},
 	},
